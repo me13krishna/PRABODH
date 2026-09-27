@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { Users, Sparkles, AlertCircle, RefreshCw, ChevronRight, CheckCircle2, Info } from 'lucide-react';
 import { CLASS_SUMMARY, PRESET_ACTIVITIES } from '../../data/mockData';
 import { generateTeacherActivity } from '../../services/aiService';
+import WhatToTeachTomorrow from './WhatToTeachTomorrow';
+import { t } from '../../i18n/translations';
 
-export default function ClassHeatmap({ students, onSelectStudent, apiKey }) {
+export default function ClassHeatmap({ students, onSelectStudent, apiKey, lang = 'hi' }) {
   const [selectedCluster, setSelectedCluster] = useState('ALL');
   const [activeActivity, setActiveActivity] = useState(PRESET_ACTIVITIES[0]);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -28,7 +30,7 @@ export default function ClassHeatmap({ students, onSelectStudent, apiKey }) {
 
   return (
     <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '24px' }}>
-      {/* Wireframe B Top Banner */}
+      {/* Top Banner Header */}
       <div style={{
         background: '#FFFFFF',
         border: '1px solid #E2E8F0',
@@ -47,10 +49,10 @@ export default function ClassHeatmap({ students, onSelectStudent, apiKey }) {
         }}>
           <div>
             <h2 style={{ fontSize: '1.6rem', fontWeight: 800, color: '#0F172A', margin: 0 }}>
-              Class 3A — TaRL Level Summary (32 Students)
+              {t('teacherTitle', lang)}
             </h2>
             <p style={{ fontSize: '0.85rem', color: '#64748B', margin: 0, fontWeight: 600 }}>
-              30-Second Glanceable Heat-Map & Level Groups
+              {t('teacherSubtitle', lang)}
             </p>
           </div>
 
@@ -66,14 +68,14 @@ export default function ClassHeatmap({ students, onSelectStudent, apiKey }) {
               alignItems: 'center',
               gap: '6px'
             }}>
-              ● Synced 2m ago
+              ● {t('syncedAgo', lang)}
             </span>
           </div>
         </div>
 
         {/* 4 Color-Coded Literacy Level Clusters */}
         <h4 style={{ fontSize: '0.95rem', fontWeight: 800, color: '#475569', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-          📖 साक्षरता स्तर (Literacy TaRL Clusters):
+          {t('literacyClusters', lang)}:
         </h4>
 
         <div style={{
@@ -95,7 +97,7 @@ export default function ClassHeatmap({ students, onSelectStudent, apiKey }) {
               transition: 'transform 0.15s ease'
             }}
           >
-            <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#991B1B' }}>Beginner (आरंभिक)</div>
+            <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#991B1B' }}>{t('beginner', lang)}</div>
             <div style={{ fontSize: '2.4rem', fontWeight: 900, color: '#991B1B', margin: '4px 0' }}>6</div>
             <div style={{ fontSize: '0.8rem', fontWeight: 600, color: '#7F1D1D' }}>Children</div>
           </div>
@@ -113,7 +115,7 @@ export default function ClassHeatmap({ students, onSelectStudent, apiKey }) {
               transition: 'transform 0.15s ease'
             }}
           >
-            <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#92400E' }}>Letter Reader (अक्षर)</div>
+            <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#92400E' }}>{t('letterReader', lang)}</div>
             <div style={{ fontSize: '2.4rem', fontWeight: 900, color: '#92400E', margin: '4px 0' }}>10</div>
             <div style={{ fontSize: '0.8rem', fontWeight: 600, color: '#78350F' }}>Children</div>
           </div>
@@ -131,7 +133,7 @@ export default function ClassHeatmap({ students, onSelectStudent, apiKey }) {
               transition: 'transform 0.15s ease'
             }}
           >
-            <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#1E40AF' }}>Word Reader (शब्द)</div>
+            <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#1E40AF' }}>{t('wordReader', lang)}</div>
             <div style={{ fontSize: '2.4rem', fontWeight: 900, color: '#1E40AF', margin: '4px 0' }}>12</div>
             <div style={{ fontSize: '0.8rem', fontWeight: 600, color: '#1E3A8A' }}>Children</div>
           </div>
@@ -149,13 +151,13 @@ export default function ClassHeatmap({ students, onSelectStudent, apiKey }) {
               transition: 'transform 0.15s ease'
             }}
           >
-            <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#166534' }}>Paragraph (अनुच्छेद)</div>
+            <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#166534' }}>{t('paragraph', lang)}</div>
             <div style={{ fontSize: '2.4rem', fontWeight: 900, color: '#166534', margin: '4px 0' }}>4</div>
             <div style={{ fontSize: '0.8rem', fontWeight: 600, color: '#14532D' }}>Children</div>
           </div>
         </div>
 
-        {/* Wireframe B Highlight Banner: Recommended 10-Min Micro-Coaching Activity Card */}
+        {/* Highlight Banner: Recommended 10-Min Micro-Coaching Activity Card */}
         <div style={{
           background: 'linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%)',
           border: '2px solid #93C5FD',
@@ -171,7 +173,7 @@ export default function ClassHeatmap({ students, onSelectStudent, apiKey }) {
             <span style={{ fontSize: '1.6rem' }}>💡</span>
             <div>
               <h4 style={{ fontSize: '1.05rem', fontWeight: 800, color: '#1E40AF', margin: 0 }}>
-                Recommended 10-Min Micro-Coaching Activity:
+                {t('recommendedActivity', lang)}
               </h4>
               <p style={{ fontSize: '0.95rem', color: '#1E3A8A', fontWeight: 600, margin: '4px 0 0 0' }}>
                 "Group B (Letter Readers) needs 5 mins of syllable-matching using flashcards before starting Subtraction."
@@ -199,11 +201,14 @@ export default function ClassHeatmap({ students, onSelectStudent, apiKey }) {
               }}
             >
               <Sparkles size={16} />
-              <span>{isGenerating ? 'AI Generating...' : 'View Activity Card'}</span>
+              <span>{isGenerating ? 'AI Generating...' : t('viewActivityCard', lang)}</span>
             </button>
           </div>
         </div>
       </div>
+
+      {/* "What Should I Teach Tomorrow?" AI Class Plan Module */}
+      <WhatToTeachTomorrow students={students} lang={lang} />
 
       {/* Generated Micro-Coaching Activity Card Details */}
       {activeActivity && (
@@ -267,7 +272,7 @@ export default function ClassHeatmap({ students, onSelectStudent, apiKey }) {
           </div>
 
           <h4 style={{ fontSize: '1.05rem', fontWeight: 800, color: '#0F172A', marginBottom: '12px' }}>
-            📝 Step-by-Step Instructions (3 Simple Steps):
+            📝 Step-by-Step Instructions:
           </h4>
           <ol style={{ paddingLeft: '20px', margin: 0 }}>
             {activeActivity.step_by_step_instructions?.map((step, idx) => (
@@ -277,7 +282,6 @@ export default function ClassHeatmap({ students, onSelectStudent, apiKey }) {
             ))}
           </ol>
 
-          {/* Explainable AI Tag */}
           <div style={{
             marginTop: '20px',
             padding: '12px 16px',
@@ -298,7 +302,7 @@ export default function ClassHeatmap({ students, onSelectStudent, apiKey }) {
 
       {/* Student Roster Table */}
       <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#0F172A', marginBottom: '16px' }}>
-        छात्र सूची & TaRL Level Badges ({filteredStudents.length} Students):
+        {t('studentRoster', lang)} ({filteredStudents.length} Students):
       </h3>
 
       <div style={{
@@ -357,7 +361,7 @@ export default function ClassHeatmap({ students, onSelectStudent, apiKey }) {
                       cursor: 'pointer'
                     }}
                   >
-                    View Profile
+                    {t('viewProfile', lang)}
                   </button>
                 </td>
               </tr>

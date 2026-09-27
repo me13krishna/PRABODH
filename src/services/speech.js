@@ -1,7 +1,13 @@
-// Web Speech API Wrapper for Audio TTS & Speech-to-Text STT Engine
+// Web Speech API Wrapper supporting Hindi (hi-IN), English (en-IN), and Marathi (mr-IN)
+
+const LANG_MAP = {
+  hi: 'hi-IN',
+  en: 'en-IN',
+  mr: 'mr-IN'
+};
 
 // Text-to-Speech (TTS)
-export function speakText(text, lang = 'hi-IN', onEndCallback) {
+export function speakText(text, lang = 'hi', onEndCallback) {
   if (!('speechSynthesis' in window)) {
     console.warn('Speech synthesis not supported on this browser.');
     if (onEndCallback) onEndCallback();
@@ -11,31 +17,29 @@ export function speakText(text, lang = 'hi-IN', onEndCallback) {
   // Cancel any ongoing speech
   window.speechSynthesis.cancel();
 
+  const targetLang = LANG_MAP[lang] || lang || 'hi-IN';
   const utterance = new SpeechSynthesisUtterance(text);
-  utterance.lang = lang;
-  utterance.rate = 0.88; // Slower rate for Grade 2-3 kids
-  utterance.pitch = 1.05; // Slightly higher/friendly pitch
+  utterance.lang = targetLang;
+  utterance.rate = 0.88; // Friendly pace for kids
+  utterance.pitch = 1.05;
 
-  // Try to find a Hindi voice if available
   const voices = window.speechSynthesis.getVoices();
-  const hindiVoice = voices.find(v => v.lang.includes('hi') || v.lang.includes('HI'));
-  if (hindiVoice) {
-    utterance.voice = hindiVoice;
+  const matchingVoice = voices.find(v => v.lang.toLowerCase().includes(targetLang.toLowerCase().substring(0, 2)));
+  if (matchingVoice) {
+    utterance.voice = matchingVoice;
   }
 
   utterance.onend = () => {
     if (onEndCallback) onEndCallback();
   };
 
-  utterance.onerror = (e) => {
-    console.warn('TTS playback error:', e);
+  utterance.onerror = () => {
     if (onEndCallback) onEndCallback();
   };
 
   window.speechSynthesis.speak(utterance);
 }
 
-// Stop any active TTS audio
 export function stopSpeaking() {
   if ('speechSynthesis' in window) {
     window.speechSynthesis.cancel();
@@ -43,18 +47,18 @@ export function stopSpeaking() {
 }
 
 // Speech Recognition (STT Engine)
-export function startListening({ lang = 'hi-IN', onResult, onError, onEnd }) {
+export function startListening({ lang = 'hi', onResult, onError, onEnd }) {
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
   if (!SpeechRecognition) {
-    console.warn('SpeechRecognition API not supported natively in this browser.');
+    console.warn('SpeechRecognition API not supported natively.');
     return null;
   }
 
   const recognition = new SpeechRecognition();
   recognition.continuous = false;
   recognition.interimResults = true;
-  recognition.lang = lang;
+  recognition.lang = LANG_MAP[lang] || lang || 'hi-IN';
 
   recognition.onresult = (event) => {
     let transcript = '';
@@ -88,7 +92,6 @@ export function startListening({ lang = 'hi-IN', onResult, onError, onEnd }) {
     recognition.start();
     return recognition;
   } catch (e) {
-    console.warn('Error starting recognition:', e);
     if (onError) onError(e);
     return null;
   }

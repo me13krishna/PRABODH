@@ -11,6 +11,7 @@ import { seedInitialStudentsIfEmpty } from './services/db';
 
 export default function App() {
   const [role, setRole] = useState('child'); // 'child' | 'teacher' | 'parent' | 'debug'
+  const [lang, setLang] = useState('hi'); // 'hi' | 'en' | 'mr'
   const [selectedMission, setSelectedMission] = useState(null);
   const [students, setStudents] = useState(INITIAL_STUDENTS);
   const [selectedStudent, setSelectedStudent] = useState(null);
@@ -30,7 +31,7 @@ export default function App() {
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: '#F8FAFC' }}>
-      {/* Universal Header Bar */}
+      {/* Universal Multi-Language Navbar */}
       <Navbar
         currentRole={role}
         setRole={(r) => {
@@ -39,6 +40,8 @@ export default function App() {
         }}
         soundEnabled={soundEnabled}
         setSoundEnabled={setSoundEnabled}
+        lang={lang}
+        setLang={setLang}
       />
 
       {/* Main View Area */}
@@ -49,12 +52,16 @@ export default function App() {
               mission={selectedMission}
               onBackToMissions={() => setSelectedMission(null)}
               onCompleteMission={() => {
-                // Return to mission selection after completion
+                // Mission complete callback
               }}
               soundEnabled={soundEnabled}
+              lang={lang}
             />
           ) : (
-            <MissionSelector onSelectMission={(mission) => setSelectedMission(mission)} />
+            <MissionSelector
+              onSelectMission={(mission) => setSelectedMission(mission)}
+              lang={lang}
+            />
           )
         )}
 
@@ -63,11 +70,12 @@ export default function App() {
             students={students}
             onSelectStudent={(student) => setSelectedStudent(student)}
             apiKey={apiKey}
+            lang={lang}
           />
         )}
 
         {role === 'parent' && (
-          <WhatsAppPromptGenerator apiKey={apiKey} />
+          <WhatsAppPromptGenerator apiKey={apiKey} lang={lang} />
         )}
 
         {role === 'debug' && (
@@ -94,10 +102,10 @@ export default function App() {
       }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
           <div>
-            <b>PRABODH AI (प्रबोध AI)</b> • AI for Foundational Learning Hackathon 2026
+            <b>PRABODH AI (प्रबोध AI / प्रबोध)</b> • AI for Foundational Learning Hackathon 2026
           </div>
           <div>
-            Primary Track: <i>Learning-Level Visibility</i> • FLN Grades 2–3
+            Active Language: <b>{lang.toUpperCase()}</b> • FLN Grades 2–3
           </div>
         </div>
       </footer>

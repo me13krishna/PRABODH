@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { RefreshCw, CheckCircle2 } from 'lucide-react';
+import { sfx } from '../services/soundEffects';
+import { t } from '../i18n/translations';
 
-export default function MangoCountersTray({ initialCount = 8, subtractCount = 3, onAnswerChange }) {
-  // Track which indices are marked as "taken away / subtracted"
+export default function MangoCountersTray({ initialCount = 8, subtractCount = 3, onAnswerChange, lang = 'hi' }) {
   const [subtractedIndices, setSubtractedIndices] = useState([]);
 
   const toggleMango = (index) => {
+    sfx.playPop(); // Play joyful pop sound effect!
     let newSubtracted = [...subtractedIndices];
     if (newSubtracted.includes(index)) {
       newSubtracted = newSubtracted.filter(i => i !== index);
@@ -23,6 +25,7 @@ export default function MangoCountersTray({ initialCount = 8, subtractCount = 3,
   };
 
   const resetTray = () => {
+    sfx.playClick();
     setSubtractedIndices([]);
     if (onAnswerChange) {
       onAnswerChange({
@@ -53,9 +56,9 @@ export default function MangoCountersTray({ initialCount = 8, subtractCount = 3,
         gap: '8px'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span style={{ fontSize: '1.5rem' }}>🧺</span>
+          <span style={{ fontSize: '1.8rem' }}>🧺</span>
           <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#92400E', margin: 0 }}>
-            आम की टोकरी (Draggable Mango Counters Tray)
+            {lang === 'mr' ? 'आम्यांची टोपली (Mango Tray)' : lang === 'en' ? 'Mango Counters Tray' : 'आम की टोकरी (Mango Counters Tray)'}
           </h3>
         </div>
 
@@ -70,7 +73,7 @@ export default function MangoCountersTray({ initialCount = 8, subtractCount = 3,
             boxShadow: '0 2px 6px rgba(0,0,0,0.06)',
             border: '2px solid #FCD34D'
           }}>
-            बचे हुए आम: {remainingCount} 🥭
+            {t('remainingMangoes', lang)} {remainingCount} 🥭
           </span>
 
           <button
@@ -89,13 +92,13 @@ export default function MangoCountersTray({ initialCount = 8, subtractCount = 3,
               fontSize: '0.85rem'
             }}
           >
-            <RefreshCw size={14} /> रीसेट (Reset)
+            <RefreshCw size={14} /> Reset
           </button>
         </div>
       </div>
 
       <p style={{ fontSize: '0.95rem', color: '#B45309', fontWeight: 600, marginBottom: '16px' }}>
-        👉 <b>निर्देश (Instruction):</b> रानी ने बेचे हुए <b>{subtractCount} आमों</b> को टोकरी से बाहर टैप / ड्रैग करके हटाएं!
+        👉 <b>{t('subtractionInstruction', lang)}</b>
       </p>
 
       {/* Mangoes Grid */}
@@ -104,7 +107,7 @@ export default function MangoCountersTray({ initialCount = 8, subtractCount = 3,
         flexWrap: 'wrap',
         gap: '16px',
         justifyContent: 'center',
-        padding: '12px',
+        padding: '16px',
         background: 'rgba(255, 255, 255, 0.7)',
         borderRadius: '20px'
       }}>
@@ -119,7 +122,7 @@ export default function MangoCountersTray({ initialCount = 8, subtractCount = 3,
                 animationDelay: `${idx * 0.1}s`,
                 position: 'relative'
               }}
-              title={isSubtracted ? "हटाया गया आम (Click to restore)" : "टोकरी का आम (Click to subtract)"}
+              title="Tap mango"
             >
               🥭
               {isSubtracted && (
@@ -130,8 +133,8 @@ export default function MangoCountersTray({ initialCount = 8, subtractCount = 3,
                   background: '#EF4444',
                   color: 'white',
                   borderRadius: '50%',
-                  width: '20px',
-                  height: '20px',
+                  width: '22px',
+                  height: '22px',
                   fontSize: '12px',
                   display: 'flex',
                   alignItems: 'center',
@@ -154,11 +157,11 @@ export default function MangoCountersTray({ initialCount = 8, subtractCount = 3,
         padding: '10px 16px',
         borderRadius: '16px',
         fontWeight: 800,
-        fontSize: '1.2rem',
+        fontSize: '1.3rem',
         color: '#78350F',
         border: '2px solid #FDE68A'
       }}>
-        {initialCount} - {subtractedIndices.length} = <span style={{ color: '#2563EB', fontSize: '1.4rem' }}>{remainingCount}</span>
+        {initialCount} - {subtractedIndices.length} = <span style={{ color: '#2563EB', fontSize: '1.5rem' }}>{remainingCount}</span>
       </div>
     </div>
   );

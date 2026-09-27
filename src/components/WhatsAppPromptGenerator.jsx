@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Send, Copy, Check, Sparkles, HeartHandshake } from 'lucide-react';
 import { generateParentPrompt } from '../services/aiService';
+import { t } from '../i18n/translations';
 
-export default function WhatsAppPromptGenerator({ apiKey }) {
+export default function WhatsAppPromptGenerator({ apiKey, lang = 'hi' }) {
   const [childName, setChildName] = useState('Aarav (आरव)');
   const [skillGap, setSkillGap] = useState('Counting backwards from 10 to 1');
   const [householdItem, setHouseholdItem] = useState('playing with pebbles/dal (दाल/कंकड़)');
@@ -16,7 +17,7 @@ export default function WhatsAppPromptGenerator({ apiKey }) {
       childName,
       skillGap,
       interest: householdItem,
-      language: 'Hindi',
+      language: lang === 'mr' ? 'Marathi' : lang === 'en' ? 'English' : 'Hindi',
       apiKey
     });
     setPromptText(result);
@@ -54,13 +55,13 @@ export default function WhatsAppPromptGenerator({ apiKey }) {
           fontWeight: 800,
           marginBottom: '12px'
         }}>
-          👨‍👩‍👧 WhatsApp Home Activity Prompt Generator (अभिभावक व्हाट्सएप सुझाव)
+          {t('parentTitle', lang)}
         </div>
         <h2 style={{ fontSize: '2rem', fontWeight: 800, marginBottom: '8px' }}>
-          5-मिनट घरेलू शिक्षण गतिविधियां
+          5-Min Home Learning Prompts
         </h2>
         <p style={{ fontSize: '1.05rem', opacity: 0.9, margin: 0, fontWeight: 500 }}>
-          कम साक्षरता वाले माता-पिता के लिए घर के सामान (दाल के दाने, सिक्के, कंकड़) से सीखने वाले बिना किसी तनाव के संदेश तैयार करें।
+          {t('parentSubtitle', lang)}
         </p>
       </div>
 
@@ -73,14 +74,10 @@ export default function WhatsAppPromptGenerator({ apiKey }) {
         boxShadow: '0 4px 20px rgba(0,0,0,0.04)',
         marginBottom: '28px'
       }}>
-        <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#0F172A', marginBottom: '20px' }}>
-          पैरामेट्रिक चयन (Select Parameters):
-        </h3>
-
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px', marginBottom: '20px' }}>
           <div>
             <label style={{ fontSize: '0.85rem', fontWeight: 700, color: '#475569', display: 'block', marginBottom: '6px' }}>
-              बच्चे का नाम (Child Name):
+              {t('childNameLabel', lang)}
             </label>
             <input
               type="text"
@@ -99,7 +96,7 @@ export default function WhatsAppPromptGenerator({ apiKey }) {
 
           <div>
             <label style={{ fontSize: '0.85rem', fontWeight: 700, color: '#475569', display: 'block', marginBottom: '6px' }}>
-              कौशल गैप (Target Skill Gap):
+              {t('skillGapLabel', lang)}
             </label>
             <select
               value={skillGap}
@@ -113,15 +110,15 @@ export default function WhatsAppPromptGenerator({ apiKey }) {
                 fontSize: '0.95rem'
               }}
             >
-              <option value="Counting backwards from 10 to 1">10 से 1 तक उल्टी गिनती (Counting Backwards)</option>
-              <option value="Single Digit Concrete Subtraction">10 में से घटाव (Concrete Subtraction)</option>
-              <option value="2-Syllable Hindi Word Reading">2-अक्षर वाले शब्द पढ़ना (Word Reading)</option>
+              <option value="Counting backwards from 10 to 1">Counting backwards (10 to 1)</option>
+              <option value="Single Digit Concrete Subtraction">Single Digit Subtraction</option>
+              <option value="2-Syllable Word Reading">2-Syllable Word Reading</option>
             </select>
           </div>
 
           <div>
             <label style={{ fontSize: '0.85rem', fontWeight: 700, color: '#475569', display: 'block', marginBottom: '6px' }}>
-              घरेलू वस्तु (Household Object):
+              {t('householdItemLabel', lang)}
             </label>
             <select
               value={householdItem}
@@ -135,9 +132,9 @@ export default function WhatsAppPromptGenerator({ apiKey }) {
                 fontSize: '0.95rem'
               }}
             >
-              <option value="playing with pebbles/dal (दाल/कंकड़)">दाल के दाने / राजमा (Dal Grains)</option>
-              <option value="counting coins (सिक्के)">1 और 2 रुपये के सिक्के (Coins)</option>
-              <option value="matching flashcard stones (छोटे पत्थर)">छोटे कंकड़/पत्थर (Pebbles)</option>
+              <option value="playing with pebbles/dal (दाल/कंकड़)">Dal Grains / Rajma</option>
+              <option value="counting coins (सिक्के)">Coins (₹1, ₹2)</option>
+              <option value="matching flashcard stones (छोटे पत्थर)">Pebbles / Stones</option>
             </select>
           </div>
         </div>
@@ -161,7 +158,7 @@ export default function WhatsAppPromptGenerator({ apiKey }) {
           }}
         >
           <Sparkles size={18} />
-          <span>{isGenerating ? 'AI जनरेट हो रहा है...' : 'व्हाट्सएप संदेश जनरेट करें (Generate Prompt)'}</span>
+          <span>{isGenerating ? 'Generating...' : t('generatePrompt', lang)}</span>
         </button>
       </div>
 
@@ -176,7 +173,7 @@ export default function WhatsAppPromptGenerator({ apiKey }) {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#15803D', fontWeight: 800 }}>
             <span style={{ fontSize: '1.4rem' }}>💬</span>
-            <span>जनरेट किया गया व्हाट्सएप संदेश (WhatsApp Message Preview):</span>
+            <span>WhatsApp Message Preview ({lang.toUpperCase()}):</span>
           </div>
 
           <span style={{ background: '#FFFFFF', color: '#15803D', fontWeight: 800, padding: '2px 10px', borderRadius: '10px', fontSize: '0.8rem' }}>
@@ -218,7 +215,7 @@ export default function WhatsAppPromptGenerator({ apiKey }) {
             }}
           >
             {copied ? <Check size={18} color="#16A34A" /> : <Copy size={18} />}
-            <span>{copied ? 'कॉपी हो गया! (Copied)' : 'संदेश कॉपी करें (Copy Message)'}</span>
+            <span>{copied ? t('copied', lang) : t('copyMessage', lang)}</span>
           </button>
 
           <button
@@ -239,7 +236,7 @@ export default function WhatsAppPromptGenerator({ apiKey }) {
             }}
           >
             <Send size={18} />
-            <span>व्हाट्सएप पर शेयर करें (Share on WhatsApp)</span>
+            <span>{t('shareWhatsApp', lang)}</span>
           </button>
         </div>
       </div>

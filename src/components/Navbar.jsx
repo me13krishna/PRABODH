@@ -1,7 +1,9 @@
 import React from 'react';
 import { Sparkles, BookOpen, Users, HeartHandshake, Settings, Volume2, VolumeX, Wifi } from 'lucide-react';
+import LanguageSwitcher from './LanguageSwitcher';
+import { t } from '../i18n/translations';
 
-export default function Navbar({ currentRole, setRole, soundEnabled, setSoundEnabled, syncStatus }) {
+export default function Navbar({ currentRole, setRole, soundEnabled, setSoundEnabled, lang, setLang }) {
   return (
     <header style={{
       background: 'rgba(255, 255, 255, 0.95)',
@@ -38,7 +40,7 @@ export default function Navbar({ currentRole, setRole, soundEnabled, setSoundEna
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <h1 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#0F172A', letterSpacing: '-0.02em', margin: 0 }}>
-                PRABODH AI
+                {t('appTitle', lang)}
               </h1>
               <span style={{
                 background: '#EFF6FF',
@@ -49,11 +51,11 @@ export default function Navbar({ currentRole, setRole, soundEnabled, setSoundEna
                 borderRadius: '12px',
                 border: '1px solid #BFDBFE'
               }}>
-                प्रबोध
+                {lang.toUpperCase()}
               </span>
             </div>
             <p style={{ fontSize: '0.75rem', color: '#64748B', margin: 0, fontWeight: 500 }}>
-              FLN Stealth Assessment Engine • Grades 2–3
+              {t('subTagline', lang)}
             </p>
           </div>
         </div>
@@ -64,7 +66,8 @@ export default function Navbar({ currentRole, setRole, soundEnabled, setSoundEna
           background: '#F1F5F9',
           padding: '4px',
           borderRadius: '16px',
-          gap: '4px'
+          gap: '4px',
+          flexWrap: 'wrap'
         }}>
           <button
             onClick={() => setRole('child')}
@@ -85,7 +88,7 @@ export default function Navbar({ currentRole, setRole, soundEnabled, setSoundEna
             }}
           >
             <BookOpen size={18} />
-            <span>👧 child story</span>
+            <span>{t('navChild', lang)}</span>
           </button>
 
           <button
@@ -107,7 +110,7 @@ export default function Navbar({ currentRole, setRole, soundEnabled, setSoundEna
             }}
           >
             <Users size={18} />
-            <span>👩‍🏫 Teacher View</span>
+            <span>{t('navTeacher', lang)}</span>
           </button>
 
           <button
@@ -129,7 +132,7 @@ export default function Navbar({ currentRole, setRole, soundEnabled, setSoundEna
             }}
           >
             <HeartHandshake size={18} />
-            <span>👨‍👩‍👧 Parent View</span>
+            <span>{t('navParent', lang)}</span>
           </button>
 
           <button
@@ -151,13 +154,14 @@ export default function Navbar({ currentRole, setRole, soundEnabled, setSoundEna
             }}
           >
             <Settings size={18} />
-            <span>⚙️ Telemetry</span>
+            <span>{t('navDebug', lang)}</span>
           </button>
         </nav>
 
-        {/* System Controls & Offline Status */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          {/* Offline Sync Badge */}
+        {/* System Controls: Language Switcher, Offline Status & Audio Toggle */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+          <LanguageSwitcher currentLang={lang} onLanguageChange={setLang} />
+
           <div style={{
             display: 'flex',
             alignItems: 'center',
@@ -171,10 +175,9 @@ export default function Navbar({ currentRole, setRole, soundEnabled, setSoundEna
             border: '1px solid #86EFAC'
           }}>
             <Wifi size={14} />
-            <span>IndexedDB Sync</span>
+            <span>{t('syncReady', lang)}</span>
           </div>
 
-          {/* Audio Sound Toggle */}
           <button
             onClick={() => setSoundEnabled(!soundEnabled)}
             style={{
@@ -189,7 +192,7 @@ export default function Navbar({ currentRole, setRole, soundEnabled, setSoundEna
               cursor: 'pointer',
               color: soundEnabled ? '#2563EB' : '#64748B'
             }}
-            title={soundEnabled ? "Audio Audio Sound ON" : "Mute Sound"}
+            title={soundEnabled ? "Sound Enabled" : "Sound Muted"}
           >
             {soundEnabled ? <Volume2 size={20} /> : <VolumeX size={20} />}
           </button>
