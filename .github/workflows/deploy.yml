@@ -1,0 +1,25 @@
+name: Render Auto-Redeploy & Health Cron
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    # Run every 6 hours to trigger fresh build/health check
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+jobs:
+  ping-and-redeploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping PRABODH AI Live App
+        run: |
+          echo "Pinging PRABODH AI on Render..."
+          curl -s -o /dev/null -w "%{http_code}" https://prabodh-ch4y.onrender.com || true
+
+      - name: Trigger Render Deploy Hook (If Configured)
+        if: ${{ secrets.RENDER_DEPLOY_HOOK_URL != '' }}
+        run: |
+          echo "Triggering Render Auto Deploy Hook..."
+          curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
