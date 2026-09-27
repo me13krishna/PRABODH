@@ -1,4 +1,4 @@
-// Comprehensive Multi-Language Mock Dataset & Story Missions (Hindi, English, Marathi)
+// Comprehensive Multi-Language Mock Dataset & 6 FLN Story Missions (Hindi, English, Marathi)
 
 export const INITIAL_STUDENTS = [
   {
@@ -320,6 +320,206 @@ export const STORY_MISSIONS = [
           mr: "१० पैकी ४ मणी बाहेर काढा!"
         },
         explainable_tag: "math_num_sub_concrete"
+      }
+    ]
+  },
+  {
+    id: "mission_birbals_khichdi",
+    icon: "🍲",
+    stars: 3,
+    title: {
+      hi: "बीरबल की खिचड़ी (Birbal's Khichdi)",
+      en: "Birbal's Khichdi",
+      mr: "बिरबलाची खिचडी (Birbal's Khichdi)"
+    },
+    category: {
+      hi: "कहानी और तर्क (Logic & Subtraction)",
+      en: "Logic & Subtraction",
+      mr: "गोष्ट आणि तर्क (Logic & Subtraction)"
+    },
+    difficulty: {
+      hi: "ठोस व अमूर्त घटाव (Subtraction Challenge)",
+      en: "Subtraction Challenge",
+      mr: "वजाबाकी आव्हान (Subtraction Challenge)"
+    },
+    description: {
+      hi: "बीरबल को हांडी पकाने के लिए लकड़ियाँ गिनने और सही घटाव करने में मदद करें!",
+      en: "Help Birbal count firewood logs to cook his famous khichdi!",
+      mr: "बिरबलाला खिचडी शिजवण्यासाठी लाकडे मोजण्यात आणि वजाबाकी करण्यात मदत करा!"
+    },
+    steps: [
+      {
+        step_id: "step_1",
+        character: {
+          hi: "बीरबल (Birbal)",
+          en: "Birbal",
+          mr: "बिरबल (Birbal)"
+        },
+        characterAvatar: "👳‍♂️",
+        dialog: {
+          hi: "जहाँपनाह! मेरी खिचड़ी पक रही है। मेरे पास 9 सूखी लकड़ियाँ थीं!",
+          en: "Your Majesty! My khichdi is cooking. I had 9 dry wooden logs!",
+          mr: "महाराज! माझी खिचडी शिजत आहे. माझ्याजवळ ९ वाळलेली लाकडे होती!"
+        },
+        question_text: {
+          hi: "बीरबल ने 9 में से 4 लकड़ियाँ आग में जलाईं। बताओ अब कितनी लकड़ियाँ बचीं?",
+          en: "Birbal burned 4 out of 9 logs in the fire. How many logs remain?",
+          mr: "बिरबलाने ९ पैकी ४ लाकडे आगीत जाळली. आता किती लाकडे उरली?"
+        },
+        type: "DRAG_COUNTERS",
+        initial_count: 9,
+        subtract_count: 4,
+        expected_answer: 5,
+        hint: {
+          hi: "9 में से 4 लकड़ियों को टैप करके निकालें!",
+          en: "Tap 4 logs out of the pile!",
+          mr: "९ पैकी ४ लाकडे बाहेर काढा!"
+        },
+        explainable_tag: "math_num_sub_concrete"
+      },
+      {
+        step_id: "step_2",
+        character: {
+          hi: "बादशाह अकबर (Emperor Akbar)",
+          en: "Emperor Akbar",
+          mr: "बादशहा अकबर (Emperor Akbar)"
+        },
+        characterAvatar: "👑",
+        dialog: {
+          hi: "वाह बीरबल! तुम्हारी खिचड़ी की खुशबू बहुत अच्छी आ रही है।",
+          en: "Well done Birbal! Your khichdi smells delicious.",
+          mr: "छान बिरबल! तुझ्या खिचडीचा छान वास येत आहे."
+        },
+        question_text: {
+          hi: "बीरबल के पास 5 लकड़ियाँ थीं। अकबर ने 2 लकड़ियाँ और ले लीं। बताओ कितनी लकड़ियाँ बचीं?",
+          en: "Birbal had 5 logs left. Emperor Akbar took 2 logs away. How many logs remain?",
+          mr: "बिरबलाजवळ ५ लाकडे होती. अकबराने २ लाकडे घेतली. आता किती लाकडे उरली?"
+        },
+        type: "VOICE_OR_TAP",
+        initial_count: 5,
+        subtract_count: 2,
+        expected_answer: 3,
+        options: [2, 3, 4, 5],
+        hint: {
+          hi: "5 में से 2 कम करें!",
+          en: "Subtract 2 from 5!",
+          mr: "५ मधून २ कमी करा!"
+        },
+        explainable_tag: "math_num_sub_abstract"
+      }
+    ]
+  },
+  {
+    id: "mission_market_math",
+    icon: "🛒",
+    stars: 3,
+    title: {
+      hi: "बाज़ार का हिसाब (Market Math)",
+      en: "Market Math",
+      mr: "बाजाराचा हिशोब (Market Math)"
+    },
+    category: {
+      hi: "दैनिक बाज़ार गणित (Daily Life Math)",
+      en: "Daily Life Math",
+      mr: "दैनंदिन बाजार गणित (Daily Life Math)"
+    },
+    difficulty: {
+      hi: "मुद्रा घटाव (Currency Subtraction)",
+      en: "Currency Subtraction",
+      mr: "नाणी वजाबाकी (Currency Subtraction)"
+    },
+    description: {
+      hi: "फलवाले काका से केल खरीदें और सिक्कों का हिसाब लगाएं!",
+      en: "Buy fresh bananas at the village market and calculate your coin balance!",
+      mr: "फळवाले काकांकडून केळी खरेदी करा आणि नाण्यांचा हिशोब करा!"
+    },
+    steps: [
+      {
+        step_id: "step_1",
+        character: {
+          hi: "काका फलवाले (Fruit Vendor Kaka)",
+          en: "Fruit Vendor Kaka",
+          mr: "काका फळवाले (Fruit Vendor Kaka)"
+        },
+        characterAvatar: "🍌",
+        dialog: {
+          hi: "ताज़े मीठे केले ले लो! ₹10 में 6 केले मिलेंगे!",
+          en: "Fresh sweet bananas! Get bananas for ₹6!",
+          mr: "ताजी गोड केळी घ्या! ₹६ मध्ये केळी मिळतील!"
+        },
+        question_text: {
+          hi: "आरव के पास 10 सिक्के थे। उसने ₹6 के केले खरीदे। बताओ जेब में कितने सिक्के बचे?",
+          en: "Aarav had 10 coins. He spent 6 coins on bananas. How many coins remain in his pocket?",
+          mr: "आरवजवळ १० नाणी होती. तिने ६ नाणी केळ्यांवर खर्च केली. आता खिशात किती नाणी उरली?"
+        },
+        type: "DRAG_COUNTERS",
+        initial_count: 10,
+        subtract_count: 6,
+        expected_answer: 4,
+        hint: {
+          hi: "10 में से 6 सिक्के बाहर टैप करें!",
+          en: "Tap 6 coins out of the tray!",
+          mr: "१० पैकी ६ नाणी बाहेर काढा!"
+        },
+        explainable_tag: "math_num_sub_concrete"
+      }
+    ]
+  },
+  {
+    id: "mission_clever_rabbit",
+    icon: "🐇",
+    stars: 3,
+    title: {
+      hi: "चतुर खरगोश (Clever Rabbit)",
+      en: "Clever Rabbit",
+      mr: "हुशार ससा (Clever Rabbit)"
+    },
+    category: {
+      hi: "पठन और कहानी (Fluency Reading)",
+      en: "Fluency Reading",
+      mr: "वाचन आणि गोष्ट (Fluency Reading)"
+    },
+    difficulty: {
+      hi: "कहानी पठन गति (Story Fluency)",
+      en: "Story Fluency",
+      mr: "गोष्ट वाचन (Story Fluency)"
+    },
+    description: {
+      hi: "चतुर खरगोश की समझदारी की कहानी बोलकर या पढ़कर सुनाएं!",
+      en: "Read aloud the famous tale of the clever rabbit and the lion!",
+      mr: "हुशार सश्याची गोष्ट मोठ्याने वाचा!"
+    },
+    steps: [
+      {
+        step_id: "step_1",
+        character: {
+          hi: "चतुर खरगोश (Clever Bunny)",
+          en: "Clever Bunny",
+          mr: "हुशार ससा (Clever Bunny)"
+        },
+        characterAvatar: "🐰",
+        dialog: {
+          hi: "मैंने अपनी बुद्धिमानी से जंगल के शेर को कुएँ में हरा दिया!",
+          en: "With my clever thinking, I outsmarted the fierce lion at the well!",
+          mr: "मी माझ्या हुशारीने जंगलातील सिंहाला विहिरीत हरवले!"
+        },
+        question_text: {
+          hi: "नीचे लिखा वाक्य बोलकर या पढ़कर सुनाएं:\n'एक छोटा खरगोश गाजर खा रहा था। उसने कुएँ में पानी देखा।'",
+          en: "Read this sentence aloud:\n'A little rabbit was eating a carrot. He looked into the well.'",
+          mr: "खालील वाक्य मोठ्याने वाचा:\n'एक लहान ससा गाजर खात होता. त्याने विहिरीत पाणी पाहिले.'"
+        },
+        type: "VOICE_READING",
+        target_text: {
+          hi: "एक छोटा खरगोश गाजर खा रहा था उसने कुएँ में पानी देखा",
+          en: "A little rabbit was eating a carrot He looked into the well",
+          mr: "एक लहान ससा गाजर खात होता त्याने विहिरीत पाणी पाहिले"
+        },
+        hint: {
+          hi: "स्पष्ट और मधुर आवाज़ में पढ़ें!",
+          en: "Read clearly and smoothly!",
+          mr: "स्पष्ट आणि गोड आवाजात वाचा!"
+        },
+        explainable_tag: "hi_lit_decoding_word"
       }
     ]
   }
