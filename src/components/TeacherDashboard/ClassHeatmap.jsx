@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Users, Sparkles, AlertCircle, RefreshCw, ChevronRight, CheckCircle2, Info, TrendingUp, HelpCircle } from 'lucide-react';
+import { Users, Sparkles, AlertCircle, RefreshCw, ChevronRight, CheckCircle2, Info, TrendingUp, HelpCircle, Lightbulb } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { CLASS_SUMMARY, PRESET_ACTIVITIES } from '../../data/mockData';
 import { generateTeacherActivity } from '../../services/aiService';
 import WhatToTeachTomorrow from './WhatToTeachTomorrow';
@@ -44,62 +45,68 @@ export default function ClassHeatmap({ students, onSelectStudent, apiKey, lang =
         gap: '16px',
         marginBottom: '24px'
       }}>
-        <Card style={{ padding: '20px', display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <div style={{
-            width: '48px',
-            height: '48px',
-            borderRadius: '16px',
-            background: '#E0F2FE',
-            color: '#0284C7',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}>
-            <Users size={24} />
-          </div>
-          <div>
-            <div style={{ fontSize: '0.8rem', fontWeight: 800, color: '#64748B' }}>TOTAL STUDENTS</div>
-            <div style={{ fontSize: '1.8rem', fontWeight: 900, color: '#0F172A' }}>{totalStudents}</div>
-          </div>
-        </Card>
+        <motion.div whileHover={{ y: -4 }}>
+          <Card style={{ padding: '20px', display: 'flex', alignItems: 'center', gap: '16px' }}>
+            <div style={{
+              width: '48px',
+              height: '48px',
+              borderRadius: '16px',
+              background: '#E0F2FE',
+              color: '#0284C7',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}>
+              <Users size={24} />
+            </div>
+            <div>
+              <div style={{ fontSize: '0.8rem', fontWeight: 800, color: '#64748B' }}>TOTAL STUDENTS</div>
+              <div style={{ fontSize: '1.8rem', fontWeight: 900, color: '#0F172A' }}>{totalStudents}</div>
+            </div>
+          </Card>
+        </motion.div>
 
-        <Card style={{ padding: '20px', display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <div style={{
-            width: '48px',
-            height: '48px',
-            borderRadius: '16px',
-            background: '#DCFCE7',
-            color: '#166534',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}>
-            <TrendingUp size={24} />
-          </div>
-          <div>
-            <div style={{ fontSize: '0.8rem', fontWeight: 800, color: '#64748B' }}>AVG FLN MASTERY</div>
-            <div style={{ fontSize: '1.8rem', fontWeight: 900, color: '#166534' }}>{avgProgress}%</div>
-          </div>
-        </Card>
+        <motion.div whileHover={{ y: -4 }}>
+          <Card style={{ padding: '20px', display: 'flex', alignItems: 'center', gap: '16px' }}>
+            <div style={{
+              width: '48px',
+              height: '48px',
+              borderRadius: '16px',
+              background: '#DCFCE7',
+              color: '#166534',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}>
+              <TrendingUp size={24} />
+            </div>
+            <div>
+              <div style={{ fontSize: '0.8rem', fontWeight: 800, color: '#64748B' }}>AVG FLN MASTERY</div>
+              <div style={{ fontSize: '1.8rem', fontWeight: 900, color: '#166534' }}>{avgProgress}%</div>
+            </div>
+          </Card>
+        </motion.div>
 
-        <Card style={{ padding: '20px', display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <div style={{
-            width: '48px',
-            height: '48px',
-            borderRadius: '16px',
-            background: '#FEF3C7',
-            color: '#92400E',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}>
-            <HelpCircle size={24} />
-          </div>
-          <div>
-            <div style={{ fontSize: '0.8rem', fontWeight: 800, color: '#64748B' }}>NEEDING SUPPORT</div>
-            <div style={{ fontSize: '1.8rem', fontWeight: 900, color: '#D97706' }}>{needingSupportCount} Kids</div>
-          </div>
-        </Card>
+        <motion.div whileHover={{ y: -4 }}>
+          <Card style={{ padding: '20px', display: 'flex', alignItems: 'center', gap: '16px' }}>
+            <div style={{
+              width: '48px',
+              height: '48px',
+              borderRadius: '16px',
+              background: '#FEF3C7',
+              color: '#92400E',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}>
+              <HelpCircle size={24} />
+            </div>
+            <div>
+              <div style={{ fontSize: '0.8rem', fontWeight: 800, color: '#64748B' }}>NEEDING SUPPORT</div>
+              <div style={{ fontSize: '1.8rem', fontWeight: 900, color: '#D97706' }}>{needingSupportCount} Kids</div>
+            </div>
+          </Card>
+        </motion.div>
       </div>
 
       {/* Top Banner Header */}
@@ -137,8 +144,8 @@ export default function ClassHeatmap({ students, onSelectStudent, apiKey, lang =
           gap: '16px',
           marginBottom: '24px'
         }}>
-          {/* Beginner */}
-          <div
+          <motion.div
+            whileHover={{ scale: 1.02 }}
             onClick={() => setSelectedCluster('BEGINNER')}
             style={{
               background: '#FEE2E2',
@@ -146,17 +153,16 @@ export default function ClassHeatmap({ students, onSelectStudent, apiKey, lang =
               borderRadius: '20px',
               padding: '20px',
               cursor: 'pointer',
-              textAlign: 'center',
-              transition: 'transform 0.15s ease'
+              textAlign: 'center'
             }}
           >
             <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#991B1B' }}>{t('beginner', lang)}</div>
             <div style={{ fontSize: '2.4rem', fontWeight: 900, color: '#991B1B', margin: '4px 0' }}>6</div>
             <div style={{ fontSize: '0.8rem', fontWeight: 600, color: '#7F1D1D' }}>Children</div>
-          </div>
+          </motion.div>
 
-          {/* Letter Reader */}
-          <div
+          <motion.div
+            whileHover={{ scale: 1.02 }}
             onClick={() => setSelectedCluster('LETTER')}
             style={{
               background: '#FEF3C7',
@@ -164,17 +170,16 @@ export default function ClassHeatmap({ students, onSelectStudent, apiKey, lang =
               borderRadius: '20px',
               padding: '20px',
               cursor: 'pointer',
-              textAlign: 'center',
-              transition: 'transform 0.15s ease'
+              textAlign: 'center'
             }}
           >
             <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#92400E' }}>{t('letterReader', lang)}</div>
             <div style={{ fontSize: '2.4rem', fontWeight: 900, color: '#92400E', margin: '4px 0' }}>10</div>
             <div style={{ fontSize: '0.8rem', fontWeight: 600, color: '#78350F' }}>Children</div>
-          </div>
+          </motion.div>
 
-          {/* Word Reader */}
-          <div
+          <motion.div
+            whileHover={{ scale: 1.02 }}
             onClick={() => setSelectedCluster('WORD')}
             style={{
               background: '#E0F2FE',
@@ -182,17 +187,16 @@ export default function ClassHeatmap({ students, onSelectStudent, apiKey, lang =
               borderRadius: '20px',
               padding: '20px',
               cursor: 'pointer',
-              textAlign: 'center',
-              transition: 'transform 0.15s ease'
+              textAlign: 'center'
             }}
           >
             <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#0369A1' }}>{t('wordReader', lang)}</div>
             <div style={{ fontSize: '2.4rem', fontWeight: 900, color: '#0369A1', margin: '4px 0' }}>12</div>
             <div style={{ fontSize: '0.8rem', fontWeight: 600, color: '#075985' }}>Children</div>
-          </div>
+          </motion.div>
 
-          {/* Paragraph */}
-          <div
+          <motion.div
+            whileHover={{ scale: 1.02 }}
             onClick={() => setSelectedCluster('PARAGRAPH')}
             style={{
               background: '#DCFCE7',
@@ -200,14 +204,13 @@ export default function ClassHeatmap({ students, onSelectStudent, apiKey, lang =
               borderRadius: '20px',
               padding: '20px',
               cursor: 'pointer',
-              textAlign: 'center',
-              transition: 'transform 0.15s ease'
+              textAlign: 'center'
             }}
           >
             <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#166534' }}>{t('paragraph', lang)}</div>
             <div style={{ fontSize: '2.4rem', fontWeight: 900, color: '#166534', margin: '4px 0' }}>4</div>
             <div style={{ fontSize: '0.8rem', fontWeight: 600, color: '#14532D' }}>Children</div>
-          </div>
+          </motion.div>
         </div>
 
         {/* Highlight Banner: Recommended Activity */}
@@ -244,7 +247,7 @@ export default function ClassHeatmap({ students, onSelectStudent, apiKey, lang =
       {/* "What Should I Teach Tomorrow?" AI Class Plan Module */}
       <WhatToTeachTomorrow students={students} lang={lang} />
 
-      {/* Student Roster Table */}
+      {/* Student Roster Table & Smart Quick Insights */}
       <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#0F172A', marginBottom: '16px' }}>
         {t('studentRoster', lang)} ({filteredStudents.length} Students):
       </h3>
@@ -256,7 +259,7 @@ export default function ClassHeatmap({ students, onSelectStudent, apiKey, lang =
               <th style={{ padding: '16px 20px', fontWeight: 800, fontSize: '0.85rem', color: '#475569' }}>ANONYMOUS ID</th>
               <th style={{ padding: '16px 20px', fontWeight: 800, fontSize: '0.85rem', color: '#475569' }}>LITERACY LEVEL</th>
               <th style={{ padding: '16px 20px', fontWeight: 800, fontSize: '0.85rem', color: '#475569' }}>NUMERACY LEVEL</th>
-              <th style={{ padding: '16px 20px', fontWeight: 800, fontSize: '0.85rem', color: '#475569' }}>INTEREST TAGS</th>
+              <th style={{ padding: '16px 20px', fontWeight: 800, fontSize: '0.85rem', color: '#475569' }}>TEACHER QUICK INSIGHT</th>
               <th style={{ padding: '16px 20px', fontWeight: 800, fontSize: '0.85rem', color: '#475569' }}>ACTION</th>
             </tr>
           </thead>
@@ -274,13 +277,10 @@ export default function ClassHeatmap({ students, onSelectStudent, apiKey, lang =
                 <td style={{ padding: '16px 20px' }}>
                   <Badge variant="purple">{s.numeracy_level}</Badge>
                 </td>
-                <td style={{ padding: '16px 20px' }}>
-                  <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
-                    {Object.entries(s.interest_tags || {}).map(([tag, score]) => (
-                      <span key={tag} style={{ background: '#F1F5F9', color: '#334155', padding: '2px 8px', borderRadius: '8px', fontSize: '0.75rem', fontWeight: 700 }}>
-                        {tag}: {Math.round(score * 100)}%
-                      </span>
-                    ))}
+                <td style={{ padding: '16px 20px', fontSize: '0.85rem', color: '#334155', fontWeight: 600 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <Lightbulb size={16} color="#F59E0B" />
+                    <span>{s.primary_error_pattern || "Needs 5 mins concrete practice."}</span>
                   </div>
                 </td>
                 <td style={{ padding: '16px 20px' }}>

@@ -1,4 +1,4 @@
-// Web Audio API Sound Synthesizer for Rich Child Micro-Interactions
+// Web Audio API & Mobile Haptic Feedback Engine for PRABODH AI
 
 class SoundEngine {
   constructor() {
@@ -14,8 +14,18 @@ class SoundEngine {
     }
   }
 
+  // Trigger mobile vibration haptic feedback if available
+  vibrate(pattern = [30]) {
+    if (typeof navigator !== 'undefined' && navigator.vibrate) {
+      try {
+        navigator.vibrate(pattern);
+      } catch (e) {}
+    }
+  }
+
   // Play a playful pop when a mango counter is tapped/dragged
   playPop() {
+    this.vibrate([20]);
     try {
       this.init();
       if (!this.ctx) return;
@@ -35,13 +45,12 @@ class SoundEngine {
 
       osc.start();
       osc.stop(this.ctx.currentTime + 0.08);
-    } catch (e) {
-      console.warn('Web Audio error:', e);
-    }
+    } catch (e) {}
   }
 
   // Victory fanfare chime when step/mission is completed
   playVictory() {
+    this.vibrate([50, 80, 50, 80, 100]);
     try {
       this.init();
       if (!this.ctx) return;
@@ -68,6 +77,7 @@ class SoundEngine {
 
   // Subtle encouraging hint sound
   playHint() {
+    this.vibrate([40, 40]);
     try {
       this.init();
       if (!this.ctx) return;
@@ -92,6 +102,7 @@ class SoundEngine {
 
   // Click button pop
   playClick() {
+    this.vibrate([15]);
     try {
       this.init();
       if (!this.ctx) return;

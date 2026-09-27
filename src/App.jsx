@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Toaster } from 'sonner';
 import Navbar from './components/Navbar';
 import MissionSelector from './components/MissionSelector';
 import StoryPlayer from './components/StoryPlayer';
@@ -30,8 +32,10 @@ export default function App() {
   }, []);
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: '#F8FAFC' }}>
-      {/* Universal Multi-Language Navbar */}
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: '#FDFBF7' }}>
+      <Toaster position="top-center" richColors />
+
+      {/* Universal Multi-Language Navbar & Mobile Bottom Bar */}
       <Navbar
         currentRole={role}
         setRole={(r) => {
@@ -44,43 +48,51 @@ export default function App() {
         setLang={setLang}
       />
 
-      {/* Main View Area */}
-      <main style={{ flex: 1, paddingBottom: '40px' }}>
-        {role === 'child' && (
-          selectedMission ? (
-            <StoryPlayer
-              mission={selectedMission}
-              onBackToMissions={() => setSelectedMission(null)}
-              onCompleteMission={() => {
-                // Mission complete callback
-              }}
-              soundEnabled={soundEnabled}
-              lang={lang}
-            />
-          ) : (
-            <MissionSelector
-              onSelectMission={(mission) => setSelectedMission(mission)}
-              lang={lang}
-            />
-          )
-        )}
+      {/* Animated Main View Area */}
+      <main style={{ flex: 1, paddingBottom: '70px' }}>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={role + (selectedMission ? selectedMission.id : 'list')}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.25 }}
+          >
+            {role === 'child' && (
+              selectedMission ? (
+                <StoryPlayer
+                  mission={selectedMission}
+                  onBackToMissions={() => setSelectedMission(null)}
+                  onCompleteMission={() => {}}
+                  soundEnabled={soundEnabled}
+                  lang={lang}
+                />
+              ) : (
+                <MissionSelector
+                  onSelectMission={(mission) => setSelectedMission(mission)}
+                  lang={lang}
+                />
+              )
+            )}
 
-        {role === 'teacher' && (
-          <ClassHeatmap
-            students={students}
-            onSelectStudent={(student) => setSelectedStudent(student)}
-            apiKey={apiKey}
-            lang={lang}
-          />
-        )}
+            {role === 'teacher' && (
+              <ClassHeatmap
+                students={students}
+                onSelectStudent={(student) => setSelectedStudent(student)}
+                apiKey={apiKey}
+                lang={lang}
+              />
+            )}
 
-        {role === 'parent' && (
-          <WhatsAppPromptGenerator apiKey={apiKey} lang={lang} />
-        )}
+            {role === 'parent' && (
+              <WhatsAppPromptGenerator apiKey={apiKey} lang={lang} />
+            )}
 
-        {role === 'debug' && (
-          <TelemetryInspector apiKey={apiKey} setApiKey={setApiKey} />
-        )}
+            {role === 'debug' && (
+              <TelemetryInspector apiKey={apiKey} setApiKey={setApiKey} />
+            )}
+          </motion.div>
+        </AnimatePresence>
       </main>
 
       {/* Student Profile Modal for Teacher View */}
@@ -102,10 +114,10 @@ export default function App() {
       }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
           <div>
-            <b>PRABODH AI (प्रबोध AI / प्रबोध)</b> • AI for Foundational Learning Hackathon 2026
+            <b>PRABODH AI (प्रबोध AI)</b> • Foundational Learning Stealth Assessment
           </div>
           <div>
-            Active Language: <b>{lang.toUpperCase()}</b> • FLN Grades 2–3
+            Active Language: <b>{lang.toUpperCase()}</b> • Grades 2–3 FLN
           </div>
         </div>
       </footer>

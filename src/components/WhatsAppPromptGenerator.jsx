@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
-import { Send, Copy, Check, Sparkles, HeartHandshake, Award, BookOpen, Calendar, Star } from 'lucide-react';
+import React, { useState, useRef } from 'react';
+import { Send, Copy, Check, Sparkles, HeartHandshake, Award, BookOpen, Calendar, Star, Download, Image as ImageIcon } from 'lucide-react';
+import { toPng } from 'html-to-image';
+import { toast } from 'sonner';
 import { generateParentPrompt } from '../services/aiService';
 import { t } from '../i18n/translations';
 import { Card } from './ui/Card';
@@ -14,6 +16,9 @@ export default function WhatsAppPromptGenerator({ apiKey, lang = 'hi' }) {
   const [promptText, setPromptText] = useState('नमस्ते! आज आरव के साथ 10 राजमा/दाल के दाने लें। एक-एक दाना हटाते हुए 10 से 1 तक उल्टी गिनती गिनने का खेल खेलें। सिर्फ 5 मिनट दें! - प्रबोध टीम');
   const [isGenerating, setIsGenerating] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
+
+  const cardRef = useRef(null);
 
   const handleGenerate = async () => {
     setIsGenerating(true);
@@ -31,12 +36,31 @@ export default function WhatsAppPromptGenerator({ apiKey, lang = 'hi' }) {
   const handleCopy = () => {
     navigator.clipboard.writeText(promptText);
     setCopied(true);
+    toast.success("Prompt copied to clipboard!", { duration: 2000 });
     setTimeout(() => setCopied(false), 2000);
   };
 
   const handleSendWhatsApp = () => {
     const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(promptText)}`;
     window.open(url, '_blank');
+  };
+
+  const handleDownloadCard = async () => {
+    if (!cardRef.current) return;
+    try {
+      setIsDownloading(true);
+      const dataUrl = await toPng(cardRef.current, { cacheBust: true });
+      const link = document.createElement('a');
+      link.download = `prabodh-progress-${childName.toLowerCase().replace(/[^a-z0-9]/g, '')}.png`;
+      link.href = dataUrl;
+      link.click();
+      toast.success("Progress card saved as PNG image!", { duration: 3000 });
+    } catch (err) {
+      console.warn('Error generating card image:', err);
+      toast.error("Could not download image. Try again.");
+    } finally {
+      setIsDownloading(false);
+    }
   };
 
   return (
@@ -69,36 +93,46 @@ export default function WhatsAppPromptGenerator({ apiKey, lang = 'hi' }) {
         </p>
       </div>
 
-      {/* "What Did My Child Learn Today?" Summary Card */}
-      <Card variant="sunrise" style={{ marginBottom: '28px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px', marginBottom: '16px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <span style={{ fontSize: '1.8rem' }}>🌟</span>
-            <div>
-              <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0F172A', margin: 0 }}>
-                {lang === 'mr' ? 'माझ्या मुलाने आज काय शिकले?' : lang === 'en' ? 'What Did My Child Learn Today?' : 'आज मेरे बच्चे ने क्या सीखा?'}
-              </h3>
-              <p style={{ fontSize: '0.85rem', color: '#64748B', margin: 0, fontWeight: 600 }}>
-                Child Profile: <b>{childName}</b> • Grade 3
-              </p>
+      {/* Visual Shareable Child Progress Card (Exportable to PNG via html-to-image) */}
+      <div ref={cardRef}>
+        <Card variant="sunrise" style={{ marginBottom: '28px', background: 'linear-gradient(180deg, #FFFBEB 0%, #FFFFFF 100%)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px', marginBottom: '16px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <span style={{ fontSize: '1.8rem' }}>🌟</span>
+              <div>
+                <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0F172A', margin: 0 }}>
+                  {lang === 'mr' ? 'माझ्या मुलाने आज काय शिकले?' : lang === 'en' ? 'What Did My Child Learn Today?' : 'आज मेरे बच्चे ने क्या सीखा?'}
+                </h3>
+                <p style={{ fontSize: '0.85rem', color: '#64748B', margin: 0, fontWeight: 600 }}>
+                  Child Profile: <b>{childName}</b> • Grade 3 • PRABODH AI
+                </p>
+              </div>
+            </div>
+            <Badge variant="growth">Completed 2 Missions Today</Badge>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px', marginBottom: '16px' }}>
+            <div style={{ background: '#FFFFFF', padding: '12px 16px', borderRadius: '16px', border: '1px solid #FCD34D' }}>
+              <strong style={{ fontSize: '0.8rem', color: '#92400E' }}>STRENGTHS:</strong>
+              <div style={{ fontWeight: 800, color: '#0F172A', fontSize: '0.95rem', marginTop: '2px' }}>Concrete Subtraction (8 - 3 = 5) 🥭</div>
+            </div>
+            <div style={{ background: '#FFFFFF', padding: '12px 16px', borderRadius: '16px', border: '1px solid #FCD34D' }}>
+              <strong style={{ fontSize: '0.8rem', color: '#92400E' }}>PRACTICE AREA:</strong>
+              <div style={{ fontWeight: 800, color: '#0F172A', fontSize: '0.95rem', marginTop: '2px' }}>Counting backwards (10 to 1) 🔢</div>
             </div>
           </div>
-          <Badge variant="growth">Completed 2 Missions Today</Badge>
-        </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px', marginBottom: '16px' }}>
-          <div style={{ background: '#FFFFFF', padding: '12px 16px', borderRadius: '16px', border: '1px solid #FCD34D' }}>
-            <strong style={{ fontSize: '0.8rem', color: '#92400E' }}>STRENGTHS:</strong>
-            <div style={{ fontWeight: 800, color: '#0F172A', fontSize: '0.95rem', marginTop: '2px' }}>Concrete Subtraction (8 - 3 = 5) 🥭</div>
-          </div>
-          <div style={{ background: '#FFFFFF', padding: '12px 16px', borderRadius: '16px', border: '1px solid #FCD34D' }}>
-            <strong style={{ fontSize: '0.8rem', color: '#92400E' }}>PRACTICE AREA:</strong>
-            <div style={{ fontWeight: 800, color: '#0F172A', fontSize: '0.95rem', marginTop: '2px' }}>Counting backwards (10 to 1) 🔢</div>
-          </div>
-        </div>
+          <ProgressBar value={78} max={100} color="#F59E0B" height="10px" label="Weekly Learning Goal Progress" />
+        </Card>
+      </div>
 
-        <ProgressBar value={78} max={100} color="#F59E0B" height="10px" label="Weekly Learning Goal Progress" />
-      </Card>
+      {/* Card Image Export Action */}
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '28px' }}>
+        <Button variant="secondary" size="md" onClick={handleDownloadCard} disabled={isDownloading}>
+          <ImageIcon size={18} />
+          <span>{isDownloading ? 'Exporting Image...' : 'Download Progress Card PNG'}</span>
+        </Button>
+      </div>
 
       {/* Input Form Box */}
       <Card style={{ marginBottom: '28px' }}>
@@ -185,7 +219,7 @@ export default function WhatsAppPromptGenerator({ apiKey, lang = 'hi' }) {
         padding: '24px',
         boxShadow: '0 12px 24px rgba(22, 163, 74, 0.1)'
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyBetween: 'space-between', marginBottom: '16px', flexWrap: 'wrap', gap: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px', flexWrap: 'wrap', gap: '8px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#15803D', fontWeight: 800 }}>
             <span style={{ fontSize: '1.4rem' }}>💬</span>
             <span>WhatsApp Message Preview ({lang.toUpperCase()}):</span>

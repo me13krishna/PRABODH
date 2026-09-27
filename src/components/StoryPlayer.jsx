@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Volume2, Star, CheckCircle, ArrowRight, RotateCcw, ShieldCheck, Sparkles, Heart } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { motion, AnimatePresence } from 'framer-motion';
+import { toast } from 'sonner';
 import MangoCountersTray from './MangoCountersTray';
 import VoiceInputButton from './VoiceInputButton';
 import { speakText, stopSpeaking } from '../services/speech';
@@ -68,14 +70,19 @@ export default function StoryPlayer({ mission, onCompleteMission, onBackToMissio
       setAttempts(prev => prev + 1);
       if (stars > 1) setStars(prev => prev - 1);
       sfx.playHint();
-      alert(lang === 'mr' ? 'अजून थोडे प्रयत्न करा! सुगावा (Hint) पहा.' : lang === 'en' ? 'Try once more! Check hint for help.' : 'थोड़ा प्रयास और करें! संकेत (Hint) देखें।');
+      
+      // Toast notification instead of browser alert!
+      const hintMsg = lang === 'mr' ? 'अजून थोडे प्रयत्न करा! सुगावा (Hint) पहा.' : lang === 'en' ? 'Try once more! Check hint for help.' : 'थोड़ा प्रयास और करें! संकेत (Hint) देखें।';
+      toast.error(hintMsg, { duration: 3000 });
       return;
     }
 
     sfx.playVictory();
+    toast.success("Shabash! Perfect Answer! 🎉", { duration: 2500 });
+
     try {
       confetti({
-        particleCount: 90,
+        particleCount: 100,
         spread: 80,
         origin: { y: 0.6 }
       });
@@ -114,54 +121,73 @@ export default function StoryPlayer({ mission, onCompleteMission, onBackToMissio
 
   if (isCompleted) {
     return (
-      <Card style={{
-        maxWidth: '700px',
-        margin: '40px auto',
-        padding: '36px 28px',
-        textAlign: 'center',
-        border: '3px solid #DCFCE7'
-      }}>
-        <div style={{ fontSize: '4.5rem', marginBottom: '12px' }} className="bounce-anim">🏆</div>
-        <h2 style={{ fontSize: '2.2rem', fontWeight: 800, color: '#166534', margin: '0 0 8px 0' }}>
-          {t('missionCompleted', lang)}
-        </h2>
-        <p style={{ fontSize: '1.2rem', color: '#475569', fontWeight: 600 }}>
-          {t('starsEarned', lang)}: {stars} ⭐
-        </p>
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.4 }}
+      >
+        <Card style={{
+          maxWidth: '700px',
+          margin: '40px auto',
+          padding: '36px 28px',
+          textAlign: 'center',
+          border: '3px solid #DCFCE7'
+        }}>
+          <motion.div
+            animate={{ y: [0, -10, 0], rotate: [0, 5, -5, 0] }}
+            transition={{ duration: 2, repeat: Infinity }}
+            style={{ fontSize: '4.5rem', marginBottom: '12px' }}
+          >
+            🏆
+          </motion.div>
+          <h2 style={{ fontSize: '2.2rem', fontWeight: 800, color: '#166534', margin: '0 0 8px 0' }}>
+            {t('missionCompleted', lang)}
+          </h2>
+          <p style={{ fontSize: '1.2rem', color: '#475569', fontWeight: 600 }}>
+            {t('starsEarned', lang)}: {stars} ⭐
+          </p>
 
-        {telemetryLog && (
-          <div style={{
-            background: '#F8FAFC',
-            border: '2px dashed #CBD5E1',
-            borderRadius: '20px',
-            padding: '16px',
-            margin: '24px 0',
-            textAlign: 'left',
-            fontSize: '0.9rem'
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#0284C7', fontWeight: 800, marginBottom: '8px' }}>
-              <ShieldCheck size={18} />
-              <span>PRABODH Stealth Assessment Telemetry:</span>
+          {telemetryLog && (
+            <div style={{
+              background: '#F8FAFC',
+              border: '2px dashed #CBD5E1',
+              borderRadius: '20px',
+              padding: '16px',
+              margin: '24px 0',
+              textAlign: 'left',
+              fontSize: '0.9rem'
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#0284C7', fontWeight: 800, marginBottom: '8px' }}>
+                <ShieldCheck size={18} />
+                <span>PRABODH Stealth Assessment Telemetry:</span>
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', color: '#334155', fontWeight: 600 }}>
+                <div>• Interaction Mode: <b>{telemetryLog.interaction_mode}</b></div>
+                <div>• Time Spent: <b>{(telemetryLog.time_spent_ms / 1000).toFixed(1)}s</b></div>
+                <div>• Language: <b>{telemetryLog.language.toUpperCase()}</b></div>
+                <div>• FLN Skill Tag: <b style={{ color: '#16A34A' }}>{telemetryLog.explainable_tag}</b></div>
+              </div>
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', color: '#334155', fontWeight: 600 }}>
-              <div>• Interaction Mode: <b>{telemetryLog.interaction_mode}</b></div>
-              <div>• Time Spent: <b>{(telemetryLog.time_spent_ms / 1000).toFixed(1)}s</b></div>
-              <div>• Language: <b>{telemetryLog.language.toUpperCase()}</b></div>
-              <div>• FLN Skill Tag: <b style={{ color: '#16A34A' }}>{telemetryLog.explainable_tag}</b></div>
-            </div>
-          </div>
-        )}
+          )}
 
-        <Button variant="primary" size="lg" onClick={onBackToMissions} style={{ marginTop: '16px' }}>
-          <span>{t('nextMission', lang)}</span>
-          <ArrowRight size={20} />
-        </Button>
-      </Card>
+          <Button variant="primary" size="lg" onClick={onBackToMissions} style={{ marginTop: '16px' }}>
+            <span>{t('nextMission', lang)}</span>
+            <ArrowRight size={20} />
+          </Button>
+        </Card>
+      </motion.div>
     );
   }
 
   return (
-    <div style={{ maxWidth: '900px', margin: '0 auto', padding: '16px' }}>
+    <motion.div
+      key={currentStepIdx}
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -20 }}
+      transition={{ duration: 0.3 }}
+      style={{ maxWidth: '900px', margin: '0 auto', padding: '16px' }}
+    >
       {/* Storybook Header Control Bar */}
       <div style={{
         display: 'flex',
@@ -184,33 +210,42 @@ export default function StoryPlayer({ mission, onCompleteMission, onBackToMissio
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
           {Array.from({ length: 3 }).map((_, i) => (
-            <Star
+            <motion.div
               key={i}
-              size={22}
-              color={i < stars ? '#F59E0B' : '#CBD5E1'}
-              fill={i < stars ? '#F59E0B' : 'none'}
-            />
+              animate={i < stars ? { scale: [1, 1.2, 1] } : {}}
+              transition={{ duration: 0.3 }}
+            >
+              <Star
+                size={22}
+                color={i < stars ? '#F59E0B' : '#CBD5E1'}
+                fill={i < stars ? '#F59E0B' : 'none'}
+              />
+            </motion.div>
           ))}
         </div>
       </div>
 
-      {/* Storybook Dialogue Scene Card */}
+      {/* Storybook Dialogue Scene Card with Breathing Avatar */}
       <Card variant="accent" style={{ textAlign: 'center', position: 'relative', marginBottom: '24px' }}>
-        <div style={{
-          width: '68px',
-          height: '68px',
-          borderRadius: '50%',
-          background: '#E0F2FE',
-          border: '3px solid #0284C7',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontSize: '2.6rem',
-          margin: '-52px auto 12px auto',
-          boxShadow: '0 6px 16px rgba(2, 132, 199, 0.2)'
-        }} className="bounce-anim">
+        <motion.div
+          animate={{ y: [0, -6, 0] }}
+          transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
+          style={{
+            width: '72px',
+            height: '72px',
+            borderRadius: '50%',
+            background: '#E0F2FE',
+            border: '3px solid #0284C7',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '2.8rem',
+            margin: '-52px auto 12px auto',
+            boxShadow: '0 6px 16px rgba(2, 132, 199, 0.2)'
+          }}
+        >
           {currentStep.characterAvatar || '👩‍🌾'}
-        </div>
+        </motion.div>
 
         <Badge variant="sky" style={{ marginBottom: '12px' }}>
           {getLoc(currentStep.character)}
@@ -225,18 +260,22 @@ export default function StoryPlayer({ mission, onCompleteMission, onBackToMissio
         </p>
 
         {showHint && (
-          <div style={{
-            marginTop: '16px',
-            background: '#FEF3C7',
-            color: '#92400E',
-            padding: '12px 18px',
-            borderRadius: '16px',
-            fontWeight: 700,
-            fontSize: '0.95rem',
-            border: '1px solid #FCD34D'
-          }}>
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            style={{
+              marginTop: '16px',
+              background: '#FEF3C7',
+              color: '#92400E',
+              padding: '12px 18px',
+              borderRadius: '16px',
+              fontWeight: 700,
+              fontSize: '0.95rem',
+              border: '1px solid #FCD34D'
+            }}
+          >
             💡 {t('hint', lang)}: {getLoc(currentStep.hint)}
-          </div>
+          </motion.div>
         )}
       </Card>
 
@@ -255,8 +294,10 @@ export default function StoryPlayer({ mission, onCompleteMission, onBackToMissio
           <h4 style={{ color: '#475569', marginBottom: '16px', fontWeight: 700 }}>Select Answer:</h4>
           <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', flexWrap: 'wrap' }}>
             {currentStep.options?.map((opt) => (
-              <button
+              <motion.button
                 key={opt}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
                 onClick={() => {
                   sfx.playPop();
                   setSelectedOption(opt);
@@ -274,7 +315,7 @@ export default function StoryPlayer({ mission, onCompleteMission, onBackToMissio
                 }}
               >
                 {opt}
-              </button>
+              </motion.button>
             ))}
           </div>
         </Card>
@@ -323,6 +364,6 @@ export default function StoryPlayer({ mission, onCompleteMission, onBackToMissio
           </Button>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
