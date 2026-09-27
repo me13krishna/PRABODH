@@ -28,18 +28,18 @@ export default function Navbar({ currentRole, setRole, soundEnabled, setSoundEna
         }}>
           {/* Brand Logo & Tagline */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer' }} onClick={() => setRole('child')}>
-            <div style={{
-              width: '44px',
-              height: '44px',
-              borderRadius: '14px',
-              background: 'linear-gradient(135deg, #0284C7 0%, #0369A1 100%)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 4px 12px rgba(2, 132, 199, 0.3)'
-            }}>
-              <Sparkles size={24} color="#FFFFFF" />
-            </div>
+            <img
+              src="/logo.jpg"
+              alt="PRABODH AI Logo"
+              style={{
+                width: '48px',
+                height: '48px',
+                borderRadius: '50%',
+                objectFit: 'cover',
+                boxShadow: '0 4px 12px rgba(2, 132, 199, 0.25)',
+                border: '2px solid #0284C7'
+              }}
+            />
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <h1 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#0F172A', letterSpacing: '-0.02em', margin: 0 }}>
