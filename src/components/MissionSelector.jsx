@@ -1,20 +1,28 @@
 import React from 'react';
-import { Play, Star, Sparkles, MapPin, Lock, Award, Compass } from 'lucide-react';
+import { Play, Star, Sparkles, MapPin, Award, Compass, Flame, CheckCircle2, Shield } from 'lucide-react';
 import { STORY_MISSIONS } from '../data/mockData';
 import { t } from '../i18n/translations';
 import { sfx } from '../services/soundEffects';
+import { Card } from './ui/Card';
+import { Button } from './ui/Button';
+import { Badge } from './ui/Badge';
+import { ProgressBar } from './ui/ProgressBar';
 
 export default function MissionSelector({ onSelectMission, lang = 'hi' }) {
+  const totalStars = 9;
+  const earnedStars = 7;
+  const streakDays = 5;
+
   return (
-    <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '24px' }}>
-      {/* Hero Welcome Adventure Banner */}
+    <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '24px 16px' }}>
+      {/* Hero Welcome Learning Journey Banner */}
       <div style={{
-        background: 'linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%)',
+        background: 'linear-gradient(135deg, #0284C7 0%, #0369A1 100%)',
         borderRadius: '32px',
-        padding: '32px',
+        padding: '32px 28px',
         color: '#FFFFFF',
-        boxShadow: '0 16px 32px rgba(37, 99, 235, 0.25)',
-        marginBottom: '36px',
+        boxShadow: '0 16px 32px rgba(2, 132, 199, 0.22)',
+        marginBottom: '28px',
         position: 'relative',
         overflow: 'hidden'
       }}>
@@ -39,44 +47,90 @@ export default function MissionSelector({ onSelectMission, lang = 'hi' }) {
             {t('storyMapSubtitle', lang)}
           </h2>
 
-          <p style={{ fontSize: '1.05rem', opacity: 0.9, maxWidth: '650px', margin: 0, fontWeight: 500 }}>
+          <p style={{ fontSize: '1.05rem', opacity: 0.95, maxWidth: '650px', margin: 0, fontWeight: 500 }}>
             "Bachcha game khelega; PRABODH samjhega ki woh kya jaanta hai aur aage kya seekhne ke liye ready hai."
           </p>
         </div>
       </div>
 
-      {/* Story Adventure Map Road */}
+      {/* Child Gamification Stats Strip: XP, Streak & Stars */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+        gap: '16px',
+        marginBottom: '32px'
+      }}>
+        {/* Streak Counter */}
+        <Card variant="sunrise" style={{ padding: '16px 20px', display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <div style={{
+            width: '48px',
+            height: '48px',
+            borderRadius: '16px',
+            background: '#FEF3C7',
+            color: '#D97706',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
+            <Flame size={28} color="#F59E0B" />
+          </div>
+          <div>
+            <div style={{ fontSize: '1.4rem', fontWeight: 900, color: '#92400E' }}>{streakDays} Day Streak 🔥</div>
+            <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#B45309' }}>Keep learning every day!</div>
+          </div>
+        </Card>
+
+        {/* Stars Progress */}
+        <Card style={{ padding: '16px 20px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+            <span style={{ fontSize: '0.85rem', fontWeight: 800, color: '#475569', display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <Star size={16} fill="#F59E0B" color="#F59E0B" /> Star Mastery Progress
+            </span>
+            <span style={{ fontSize: '0.9rem', fontWeight: 900, color: '#F59E0B' }}>{earnedStars}/{totalStars} ⭐</span>
+          </div>
+          <ProgressBar value={earnedStars} max={totalStars} color="#F59E0B" height="10px" />
+        </Card>
+
+        {/* Badges Strip */}
+        <Card style={{ padding: '16px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div>
+            <div style={{ fontSize: '0.8rem', fontWeight: 800, color: '#64748B' }}>Badges Unlocked</div>
+            <div style={{ display: 'flex', gap: '8px', marginTop: '6px' }}>
+              <span title="Story Explorer" style={{ fontSize: '1.4rem' }}>🏅</span>
+              <span title="Math Master" style={{ fontSize: '1.4rem' }}>🥭</span>
+              <span title="Jungle Reader" style={{ fontSize: '1.4rem' }}>🦁</span>
+            </div>
+          </div>
+          <Badge variant="growth">3 Badges</Badge>
+        </Card>
+      </div>
+
+      {/* Story Adventure Map Nodes */}
       <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#0F172A', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-        <MapPin color="#2563EB" size={22} />
+        <MapPin color="#0284C7" size={22} />
         <span>{t('chooseMission', lang)}</span>
       </h3>
 
       <div style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-        gap: '28px'
+        gap: '24px'
       }}>
         {STORY_MISSIONS.map((m, idx) => {
           const titleText = m.title[lang] || m.title.hi;
-          const categoryText = m.category[lang] || m.category.hi;
           const diffText = m.difficulty[lang] || m.difficulty.hi;
           const descText = m.description[lang] || m.description.hi;
 
           return (
-            <div
+            <Card
               key={m.id}
-              className="glass-card"
+              variant={idx === 0 ? "accent" : "default"}
               style={{
-                padding: '28px',
-                borderRadius: '32px',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-between',
-                transition: 'all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)',
                 cursor: 'pointer',
-                border: '2px solid rgba(37, 99, 235, 0.15)',
-                position: 'relative',
-                overflow: 'hidden'
+                position: 'relative'
               }}
               onClick={() => {
                 sfx.playClick();
@@ -84,43 +138,32 @@ export default function MissionSelector({ onSelectMission, lang = 'hi' }) {
               }}
             >
               {/* Level Badge Number */}
-              <div style={{
-                position: 'absolute',
-                top: '16px',
-                right: '16px',
-                background: '#EFF6FF',
-                color: '#2563EB',
-                fontWeight: 800,
-                fontSize: '0.8rem',
-                padding: '4px 12px',
-                borderRadius: '16px',
-                border: '1px solid #BFDBFE'
-              }}>
-                LEVEL {idx + 1}
+              <div style={{ position: 'absolute', top: '16px', right: '16px' }}>
+                <Badge variant={idx === 0 ? "sky" : "neutral"}>LEVEL {idx + 1}</Badge>
               </div>
 
               <div>
                 <div style={{
-                  width: '72px',
-                  height: '72px',
+                  width: '68px',
+                  height: '68px',
                   borderRadius: '24px',
                   background: '#FEF3C7',
                   border: '3px solid #F59E0B',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  fontSize: '3rem',
-                  marginBottom: '20px',
-                  boxShadow: '0 8px 16px rgba(245, 158, 11, 0.2)'
+                  fontSize: '2.8rem',
+                  marginBottom: '16px',
+                  boxShadow: '0 6px 14px rgba(245, 158, 11, 0.2)'
                 }} className="bounce-anim">
                   {m.icon}
                 </div>
 
-                <span className="badge-word" style={{ padding: '4px 12px', borderRadius: '12px', fontSize: '0.8rem', fontWeight: 800, display: 'inline-block', marginBottom: '8px' }}>
+                <Badge variant="sunrise" style={{ marginBottom: '8px' }}>
                   {diffText}
-                </span>
+                </Badge>
 
-                <h4 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#0F172A', marginBottom: '8px' }}>
+                <h4 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#0F172A', marginBottom: '8px' }}>
                   {titleText}
                 </h4>
 
@@ -142,22 +185,12 @@ export default function MissionSelector({ onSelectMission, lang = 'hi' }) {
                   ))}
                 </div>
 
-                <button
-                  className="child-btn"
-                  style={{
-                    background: '#2563EB',
-                    color: '#FFFFFF',
-                    padding: '10px 20px',
-                    minHeight: '48px',
-                    fontSize: '0.95rem',
-                    boxShadow: '0 4px 14px rgba(37, 99, 235, 0.3)'
-                  }}
-                >
+                <Button variant="primary" size="md">
                   <span>{t('playMission', lang)}</span>
                   <Play size={16} />
-                </button>
+                </Button>
               </div>
-            </div>
+            </Card>
           );
         })}
       </div>

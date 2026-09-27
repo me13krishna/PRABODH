@@ -1,31 +1,37 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap');
 
 :root {
-  --primary: #2563EB;
-  --primary-hover: #1D4ED8;
-  --primary-light: #EFF6FF;
-  --success: #16A34A;
-  --success-light: #DCFCE7;
-  --warning: #D97706;
-  --warning-light: #FEF3C7;
+  /* PRABODH "Learning as an Adventure" Warm Palette */
+  --primary: #0284C7;          /* Sky Blue */
+  --primary-hover: #0369A1;
+  --primary-light: #E0F2FE;
+  
+  --sunrise: #F59E0B;          /* Warm Sunrise Yellow */
+  --sunrise-hover: #D97706;
+  --sunrise-light: #FEF3C7;
+  
+  --growth: #16A34A;           /* Growth Green */
+  --growth-light: #DCFCE7;
+  
   --danger: #DC2626;
   --danger-light: #FEE2E2;
-  --background: #F8FAFC;
+  
+  --background: #FDFBF7;       /* Warm Off-white Canvas */
   --surface: #FFFFFF;
-  --surface-alt: #F1F5F9;
+  --surface-alt: #F8FAFC;
+  
   --text-main: #0F172A;
   --text-muted: #64748B;
   --border: #E2E8F0;
   
-  --radius-sm: 8px;
-  --radius-md: 16px;
-  --radius-lg: 24px;
+  --radius-sm: 10px;
+  --radius-md: 18px;
+  --radius-lg: 28px;
   --radius-full: 9999px;
   
-  --shadow-sm: 0 2px 4px rgba(15, 23, 42, 0.05);
-  --shadow-md: 0 10px 25px -5px rgba(37, 99, 235, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
-  --shadow-lg: 0 20px 30px -10px rgba(37, 99, 235, 0.15);
-  --shadow-glow: 0 0 20px rgba(37, 99, 235, 0.3);
+  --shadow-sm: 0 2px 6px rgba(15, 23, 42, 0.04);
+  --shadow-md: 0 10px 25px -5px rgba(2, 132, 199, 0.08), 0 8px 12px -6px rgba(0, 0, 0, 0.03);
+  --shadow-lg: 0 20px 32px -10px rgba(2, 132, 199, 0.14);
 }
 
 * {
@@ -56,24 +62,20 @@ body {
   background: #CBD5E1;
   border-radius: 4px;
 }
-::-webkit-scrollbar-thumb:hover {
-  background: #94A3B8;
-}
 
-/* Inclusive Child & Teacher UI Tokens */
+/* Child & Inclusive UI Tokens */
 .child-text {
   font-size: 1.35rem;
   line-height: 1.7;
-  font-weight: 600;
-  letter-spacing: 0.01em;
+  font-weight: 700;
 }
 
 .child-btn {
   min-height: 56px;
   min-width: 56px;
   border-radius: var(--radius-lg);
-  font-size: 1.15rem;
-  font-weight: 700;
+  font-size: 1.1rem;
+  font-weight: 800;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -97,19 +99,19 @@ body {
 
 /* Drag Tray Objects */
 .drag-object {
-  width: 68px;
-  height: 68px;
+  width: 72px;
+  height: 72px;
   border-radius: var(--radius-full);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2.2rem;
+  font-size: 2.3rem;
   cursor: grab;
   user-select: none;
   touch-action: none;
   background: #FFFBEB;
   border: 3px solid #F59E0B;
-  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.25);
+  box-shadow: 0 6px 16px rgba(245, 158, 11, 0.25);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
@@ -120,26 +122,14 @@ body {
 }
 
 .drag-object.subtracted {
-  opacity: 0.35;
-  filter: grayscale(80%);
+  opacity: 0.3;
+  filter: grayscale(90%);
   border-color: #CBD5E1;
   background: #F1F5F9;
-  transform: scale(0.85);
+  transform: scale(0.8);
 }
 
-/* Pulse & Wave Animations */
-@keyframes pulseGlow {
-  0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.4); }
-  70% { box-shadow: 0 0 0 16px rgba(37, 99, 235, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
-}
-
-.recording-pulse {
-  animation: pulseGlow 1.5s infinite;
-  background: #EF4444 !important;
-  color: white !important;
-}
-
+/* Animations */
 @keyframes bounceSlow {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-8px); }
@@ -149,16 +139,27 @@ body {
   animation: bounceSlow 2s ease-in-out infinite;
 }
 
-/* Card glassmorphism */
+@keyframes pulseGlow {
+  0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.4); }
+  70% { box-shadow: 0 0 0 16px rgba(220, 38, 38, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
+}
+
+.recording-pulse {
+  animation: pulseGlow 1.5s infinite;
+  background: #DC2626 !important;
+  color: white !important;
+}
+
 .glass-card {
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.98);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(226, 232, 240, 0.8);
+  border: 1px solid rgba(226, 232, 240, 0.9);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-md);
 }
 
-/* TaRL Level Color Badges */
+/* TaRL Badges */
 .badge-beginner {
   background: #FEE2E2;
   color: #991B1B;
@@ -172,9 +173,9 @@ body {
 }
 
 .badge-word {
-  background: #DBEAFE;
-  color: #1E40AF;
-  border: 1px solid #93C5FD;
+  background: #E0F2FE;
+  color: #0369A1;
+  border: 1px solid #7DD3FC;
 }
 
 .badge-paragraph {
@@ -187,4 +188,20 @@ body {
   background: #F3E8FF;
   color: #6B21A8;
   border: 1px solid #D8B4FE;
+}
+
+/* Mobile Responsive Navigation Bar */
+@media (max-width: 768px) {
+  .desktop-nav {
+    display: none !important;
+  }
+  .mobile-bottom-nav {
+    display: flex !important;
+  }
+}
+
+@media (min-width: 769px) {
+  .mobile-bottom-nav {
+    display: none !important;
+  }
 }

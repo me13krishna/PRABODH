@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Volume2, Star, CheckCircle, ArrowRight, RotateCcw, AlertTriangle, ShieldCheck, HeartHandshake } from 'lucide-react';
+import { Volume2, Star, CheckCircle, ArrowRight, RotateCcw, ShieldCheck, Sparkles, Heart } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import MangoCountersTray from './MangoCountersTray';
 import VoiceInputButton from './VoiceInputButton';
@@ -7,6 +7,9 @@ import { speakText, stopSpeaking } from '../services/speech';
 import { saveTelemetryEvent } from '../services/db';
 import { sfx } from '../services/soundEffects';
 import { t } from '../i18n/translations';
+import { Card } from './ui/Card';
+import { Button } from './ui/Button';
+import { Badge } from './ui/Badge';
 
 export default function StoryPlayer({ mission, onCompleteMission, onBackToMissions, soundEnabled, lang = 'hi' }) {
   const [currentStepIdx, setCurrentStepIdx] = useState(0);
@@ -23,7 +26,6 @@ export default function StoryPlayer({ mission, onCompleteMission, onBackToMissio
 
   const currentStep = mission.steps[currentStepIdx];
 
-  // Helper to extract localized text
   const getLoc = (field) => {
     if (!field) return '';
     if (typeof field === 'string') return field;
@@ -55,11 +57,11 @@ export default function StoryPlayer({ mission, onCompleteMission, onBackToMissio
         isCorrect = (Number(selectedOption) === currentStep.expected_answer);
         mode = 'TOUCH';
       } else if (voiceResult && voiceResult.transcript) {
-        isCorrect = true; // Voice match
+        isCorrect = true;
         mode = 'VOICE';
       }
     } else {
-      isCorrect = true; // Reading fluency
+      isCorrect = true;
     }
 
     if (!isCorrect) {
@@ -70,7 +72,6 @@ export default function StoryPlayer({ mission, onCompleteMission, onBackToMissio
       return;
     }
 
-    // Play victory SFX & confetti
     sfx.playVictory();
     try {
       confetti({
@@ -80,7 +81,6 @@ export default function StoryPlayer({ mission, onCompleteMission, onBackToMissio
       });
     } catch(e){}
 
-    // Record stealth assessment telemetry
     const timeSpentMs = Date.now() - startTime;
     const sessionEvent = {
       session_id: `sess_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
@@ -114,14 +114,11 @@ export default function StoryPlayer({ mission, onCompleteMission, onBackToMissio
 
   if (isCompleted) {
     return (
-      <div style={{
+      <Card style={{
         maxWidth: '700px',
         margin: '40px auto',
-        padding: '36px',
-        background: '#FFFFFF',
-        borderRadius: '32px',
+        padding: '36px 28px',
         textAlign: 'center',
-        boxShadow: '0 20px 40px rgba(0,0,0,0.1)',
         border: '3px solid #DCFCE7'
       }}>
         <div style={{ fontSize: '4.5rem', marginBottom: '12px' }} className="bounce-anim">🏆</div>
@@ -132,7 +129,6 @@ export default function StoryPlayer({ mission, onCompleteMission, onBackToMissio
           {t('starsEarned', lang)}: {stars} ⭐
         </p>
 
-        {/* Telemetry Badge */}
         {telemetryLog && (
           <div style={{
             background: '#F8FAFC',
@@ -143,7 +139,7 @@ export default function StoryPlayer({ mission, onCompleteMission, onBackToMissio
             textAlign: 'left',
             fontSize: '0.9rem'
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#2563EB', fontWeight: 800, marginBottom: '8px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#0284C7', fontWeight: 800, marginBottom: '8px' }}>
               <ShieldCheck size={18} />
               <span>PRABODH Stealth Assessment Telemetry:</span>
             </div>
@@ -156,50 +152,31 @@ export default function StoryPlayer({ mission, onCompleteMission, onBackToMissio
           </div>
         )}
 
-        <button
-          onClick={onBackToMissions}
-          className="child-btn"
-          style={{ background: '#2563EB', color: '#FFFFFF', marginTop: '16px' }}
-        >
+        <Button variant="primary" size="lg" onClick={onBackToMissions} style={{ marginTop: '16px' }}>
           <span>{t('nextMission', lang)}</span>
           <ArrowRight size={20} />
-        </button>
-      </div>
+        </Button>
+      </Card>
     );
   }
 
   return (
     <div style={{ maxWidth: '900px', margin: '0 auto', padding: '16px' }}>
-      {/* Top Header Bar */}
+      {/* Storybook Header Control Bar */}
       <div style={{
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
         background: '#FFFFFF',
-        padding: '14px 24px',
+        padding: '14px 20px',
         borderRadius: '24px',
-        boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
-        marginBottom: '24px'
+        boxShadow: '0 4px 12px rgba(0,0,0,0.04)',
+        marginBottom: '20px'
       }}>
-        <button
-          onClick={handlePlayAudio}
-          style={{
-            background: '#EFF6FF',
-            border: '2px solid #BFDBFE',
-            color: '#2563EB',
-            borderRadius: '16px',
-            padding: '8px 16px',
-            fontWeight: 800,
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            cursor: 'pointer',
-            fontSize: '0.95rem'
-          }}
-        >
-          <Volume2 size={20} />
+        <Button variant="secondary" size="sm" onClick={handlePlayAudio}>
+          <Volume2 size={18} />
           <span>[ 🔊 {t('audioListener', lang)} ] {getLoc(currentStep.character)}</span>
-        </button>
+        </Button>
 
         <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0F172A', margin: 0 }}>
           {getLoc(mission.title)}
@@ -209,7 +186,7 @@ export default function StoryPlayer({ mission, onCompleteMission, onBackToMissio
           {Array.from({ length: 3 }).map((_, i) => (
             <Star
               key={i}
-              size={24}
+              size={22}
               color={i < stars ? '#F59E0B' : '#CBD5E1'}
               fill={i < stars ? '#F59E0B' : 'none'}
             />
@@ -217,46 +194,27 @@ export default function StoryPlayer({ mission, onCompleteMission, onBackToMissio
         </div>
       </div>
 
-      {/* Animated Character & Dialog Banner */}
-      <div style={{
-        background: 'linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%)',
-        border: '3px solid #2563EB',
-        borderRadius: '32px',
-        padding: '28px',
-        boxShadow: '0 12px 28px rgba(37, 99, 235, 0.12)',
-        marginBottom: '24px',
-        textAlign: 'center',
-        position: 'relative'
-      }}>
-        {/* Character Avatar */}
+      {/* Storybook Dialogue Scene Card */}
+      <Card variant="accent" style={{ textAlign: 'center', position: 'relative', marginBottom: '24px' }}>
         <div style={{
-          width: '64px',
-          height: '64px',
+          width: '68px',
+          height: '68px',
           borderRadius: '50%',
-          background: '#DBEAFE',
-          border: '3px solid #2563EB',
+          background: '#E0F2FE',
+          border: '3px solid #0284C7',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          fontSize: '2.5rem',
-          margin: '-48px auto 12px auto',
-          boxShadow: '0 6px 16px rgba(37, 99, 235, 0.2)'
+          fontSize: '2.6rem',
+          margin: '-52px auto 12px auto',
+          boxShadow: '0 6px 16px rgba(2, 132, 199, 0.2)'
         }} className="bounce-anim">
           {currentStep.characterAvatar || '👩‍🌾'}
         </div>
 
-        <div style={{
-          display: 'inline-block',
-          background: '#DBEAFE',
-          color: '#1E40AF',
-          fontWeight: 800,
-          padding: '4px 14px',
-          borderRadius: '16px',
-          fontSize: '0.85rem',
-          marginBottom: '12px'
-        }}>
+        <Badge variant="sky" style={{ marginBottom: '12px' }}>
           {getLoc(currentStep.character)}
-        </div>
+        </Badge>
 
         <p style={{ fontSize: '1.05rem', color: '#475569', fontWeight: 600, margin: '0 0 12px 0' }}>
           "{getLoc(currentStep.dialog)}"
@@ -280,9 +238,9 @@ export default function StoryPlayer({ mission, onCompleteMission, onBackToMissio
             💡 {t('hint', lang)}: {getLoc(currentStep.hint)}
           </div>
         )}
-      </div>
+      </Card>
 
-      {/* Manipulative or Choice mechanics */}
+      {/* Manipulatives or Answer Choices */}
       {currentStep.type === 'DRAG_COUNTERS' && (
         <MangoCountersTray
           initialCount={currentStep.initial_count}
@@ -293,14 +251,7 @@ export default function StoryPlayer({ mission, onCompleteMission, onBackToMissio
       )}
 
       {currentStep.type === 'VOICE_OR_TAP' && (
-        <div style={{
-          background: '#FFFFFF',
-          borderRadius: '24px',
-          padding: '24px',
-          margin: '20px 0',
-          boxShadow: '0 8px 20px rgba(0,0,0,0.05)',
-          textAlign: 'center'
-        }}>
+        <Card style={{ textAlign: 'center', margin: '20px 0' }}>
           <h4 style={{ color: '#475569', marginBottom: '16px', fontWeight: 700 }}>Select Answer:</h4>
           <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', flexWrap: 'wrap' }}>
             {currentStep.options?.map((opt) => (
@@ -316,9 +267,9 @@ export default function StoryPlayer({ mission, onCompleteMission, onBackToMissio
                   borderRadius: '20px',
                   fontSize: '1.6rem',
                   fontWeight: 800,
-                  border: selectedOption === opt ? '3px solid #2563EB' : '2px solid #E2E8F0',
-                  background: selectedOption === opt ? '#EFF6FF' : '#FFFFFF',
-                  color: selectedOption === opt ? '#2563EB' : '#0F172A',
+                  border: selectedOption === opt ? '3px solid #0284C7' : '2px solid #E2E8F0',
+                  background: selectedOption === opt ? '#E0F2FE' : '#FFFFFF',
+                  color: selectedOption === opt ? '#0284C7' : '#0F172A',
                   cursor: 'pointer'
                 }}
               >
@@ -326,7 +277,7 @@ export default function StoryPlayer({ mission, onCompleteMission, onBackToMissio
               </button>
             ))}
           </div>
-        </div>
+        </Card>
       )}
 
       {/* Action Controls */}
@@ -349,38 +300,27 @@ export default function StoryPlayer({ mission, onCompleteMission, onBackToMissio
 
         <div style={{ display: 'flex', gap: '12px' }}>
           {!showHint && (
-            <button
+            <Button
+              variant="sunrise"
+              size="md"
               onClick={() => {
                 sfx.playHint();
                 setShowHint(true);
                 setHintsUsed(prev => prev + 1);
               }}
-              style={{
-                background: '#FEF3C7',
-                color: '#D97706',
-                border: '2px solid #FCD34D',
-                borderRadius: '16px',
-                padding: '12px 20px',
-                fontWeight: 800,
-                cursor: 'pointer'
-              }}
             >
               💡 {t('hint', lang)}
-            </button>
+            </Button>
           )}
 
-          <button
+          <Button
+            variant="growth"
+            size="md"
             onClick={() => handleVerifyAnswer('TOUCH')}
-            className="child-btn"
-            style={{
-              background: '#16A34A',
-              color: '#FFFFFF',
-              boxShadow: '0 8px 20px rgba(22, 163, 74, 0.3)'
-            }}
           >
             <CheckCircle size={22} />
             <span>{t('submitAnswer', lang)}</span>
-          </button>
+          </Button>
         </div>
       </div>
     </div>

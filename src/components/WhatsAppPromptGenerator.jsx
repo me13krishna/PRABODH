@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
-import { Send, Copy, Check, Sparkles, HeartHandshake } from 'lucide-react';
+import { Send, Copy, Check, Sparkles, HeartHandshake, Award, BookOpen, Calendar, Star } from 'lucide-react';
 import { generateParentPrompt } from '../services/aiService';
 import { t } from '../i18n/translations';
+import { Card } from './ui/Card';
+import { Button } from './ui/Button';
+import { Badge } from './ui/Badge';
+import { ProgressBar } from './ui/ProgressBar';
 
 export default function WhatsAppPromptGenerator({ apiKey, lang = 'hi' }) {
   const [childName, setChildName] = useState('Aarav (आरव)');
@@ -36,15 +40,15 @@ export default function WhatsAppPromptGenerator({ apiKey, lang = 'hi' }) {
   };
 
   return (
-    <div style={{ maxWidth: '850px', margin: '0 auto', padding: '24px' }}>
+    <div style={{ maxWidth: '900px', margin: '0 auto', padding: '24px 16px' }}>
       {/* Parent Header Banner */}
       <div style={{
         background: 'linear-gradient(135deg, #16A34A 0%, #15803D 100%)',
         borderRadius: '32px',
-        padding: '32px',
+        padding: '32px 28px',
         color: '#FFFFFF',
-        boxShadow: '0 16px 32px rgba(22, 163, 74, 0.25)',
-        marginBottom: '32px'
+        boxShadow: '0 16px 32px rgba(22, 163, 74, 0.22)',
+        marginBottom: '28px'
       }}>
         <div style={{
           display: 'inline-block',
@@ -58,22 +62,50 @@ export default function WhatsAppPromptGenerator({ apiKey, lang = 'hi' }) {
           {t('parentTitle', lang)}
         </div>
         <h2 style={{ fontSize: '2rem', fontWeight: 800, marginBottom: '8px' }}>
-          5-Min Home Learning Prompts
+          {lang === 'mr' ? '५-मिनिट गृहकृती आणि प्रगती अहवाल' : lang === 'en' ? '5-Min Home Learning & Progress Reports' : '5-मिनट घरेलू गतिविधि और प्रगति रिपोर्ट'}
         </h2>
-        <p style={{ fontSize: '1.05rem', opacity: 0.9, margin: 0, fontWeight: 500 }}>
+        <p style={{ fontSize: '1.05rem', opacity: 0.95, margin: 0, fontWeight: 500 }}>
           {t('parentSubtitle', lang)}
         </p>
       </div>
 
+      {/* "What Did My Child Learn Today?" Summary Card */}
+      <Card variant="sunrise" style={{ marginBottom: '28px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px', marginBottom: '16px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <span style={{ fontSize: '1.8rem' }}>🌟</span>
+            <div>
+              <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0F172A', margin: 0 }}>
+                {lang === 'mr' ? 'माझ्या मुलाने आज काय शिकले?' : lang === 'en' ? 'What Did My Child Learn Today?' : 'आज मेरे बच्चे ने क्या सीखा?'}
+              </h3>
+              <p style={{ fontSize: '0.85rem', color: '#64748B', margin: 0, fontWeight: 600 }}>
+                Child Profile: <b>{childName}</b> • Grade 3
+              </p>
+            </div>
+          </div>
+          <Badge variant="growth">Completed 2 Missions Today</Badge>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px', marginBottom: '16px' }}>
+          <div style={{ background: '#FFFFFF', padding: '12px 16px', borderRadius: '16px', border: '1px solid #FCD34D' }}>
+            <strong style={{ fontSize: '0.8rem', color: '#92400E' }}>STRENGTHS:</strong>
+            <div style={{ fontWeight: 800, color: '#0F172A', fontSize: '0.95rem', marginTop: '2px' }}>Concrete Subtraction (8 - 3 = 5) 🥭</div>
+          </div>
+          <div style={{ background: '#FFFFFF', padding: '12px 16px', borderRadius: '16px', border: '1px solid #FCD34D' }}>
+            <strong style={{ fontSize: '0.8rem', color: '#92400E' }}>PRACTICE AREA:</strong>
+            <div style={{ fontWeight: 800, color: '#0F172A', fontSize: '0.95rem', marginTop: '2px' }}>Counting backwards (10 to 1) 🔢</div>
+          </div>
+        </div>
+
+        <ProgressBar value={78} max={100} color="#F59E0B" height="10px" label="Weekly Learning Goal Progress" />
+      </Card>
+
       {/* Input Form Box */}
-      <div style={{
-        background: '#FFFFFF',
-        border: '1px solid #E2E8F0',
-        borderRadius: '24px',
-        padding: '24px',
-        boxShadow: '0 4px 20px rgba(0,0,0,0.04)',
-        marginBottom: '28px'
-      }}>
+      <Card style={{ marginBottom: '28px' }}>
+        <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#0F172A', marginBottom: '16px' }}>
+          Generate WhatsApp Household Activity:
+        </h3>
+
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px', marginBottom: '20px' }}>
           <div>
             <label style={{ fontSize: '0.85rem', fontWeight: 700, color: '#475569', display: 'block', marginBottom: '6px' }}>
@@ -139,28 +171,11 @@ export default function WhatsAppPromptGenerator({ apiKey, lang = 'hi' }) {
           </div>
         </div>
 
-        <button
-          onClick={handleGenerate}
-          disabled={isGenerating}
-          style={{
-            background: '#16A34A',
-            color: '#FFFFFF',
-            border: 'none',
-            borderRadius: '16px',
-            padding: '12px 24px',
-            fontWeight: 800,
-            fontSize: '1rem',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            boxShadow: '0 4px 14px rgba(22, 163, 74, 0.3)'
-          }}
-        >
+        <Button variant="growth" size="md" onClick={handleGenerate} disabled={isGenerating}>
           <Sparkles size={18} />
           <span>{isGenerating ? 'Generating...' : t('generatePrompt', lang)}</span>
-        </button>
-      </div>
+        </Button>
+      </Card>
 
       {/* Generated WhatsApp Message Preview Card */}
       <div style={{
@@ -170,15 +185,13 @@ export default function WhatsAppPromptGenerator({ apiKey, lang = 'hi' }) {
         padding: '24px',
         boxShadow: '0 12px 24px rgba(22, 163, 74, 0.1)'
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyBetween: 'space-between', marginBottom: '16px', flexWrap: 'wrap', gap: '8px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#15803D', fontWeight: 800 }}>
             <span style={{ fontSize: '1.4rem' }}>💬</span>
             <span>WhatsApp Message Preview ({lang.toUpperCase()}):</span>
           </div>
 
-          <span style={{ background: '#FFFFFF', color: '#15803D', fontWeight: 800, padding: '2px 10px', borderRadius: '10px', fontSize: '0.8rem' }}>
-            Non-Judgmental & Encouraging
-          </span>
+          <Badge variant="growth">Non-Judgmental & Encouraging</Badge>
         </div>
 
         <div style={{
@@ -186,37 +199,20 @@ export default function WhatsAppPromptGenerator({ apiKey, lang = 'hi' }) {
           border: '1px solid #BBF7D0',
           borderRadius: '20px',
           padding: '20px',
-          fontSize: '1.2rem',
+          fontSize: '1.15rem',
           fontWeight: 700,
           color: '#0F172A',
           lineHeight: '1.8',
-          marginBottom: '20px',
-          boxShadow: '0 2px 8px rgba(0,0,0,0.03)'
+          marginBottom: '20px'
         }}>
           "{promptText}"
         </div>
 
-        {/* Action Buttons */}
         <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-          <button
-            onClick={handleCopy}
-            style={{
-              background: '#FFFFFF',
-              color: '#15803D',
-              border: '2px solid #86EFAC',
-              borderRadius: '14px',
-              padding: '12px 20px',
-              fontWeight: 800,
-              fontSize: '0.95rem',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px'
-            }}
-          >
+          <Button variant="secondary" size="md" onClick={handleCopy}>
             {copied ? <Check size={18} color="#16A34A" /> : <Copy size={18} />}
             <span>{copied ? t('copied', lang) : t('copyMessage', lang)}</span>
-          </button>
+          </Button>
 
           <button
             onClick={handleSendWhatsApp}
@@ -224,8 +220,8 @@ export default function WhatsAppPromptGenerator({ apiKey, lang = 'hi' }) {
               background: '#25D366',
               color: '#FFFFFF',
               border: 'none',
-              borderRadius: '14px',
-              padding: '12px 24px',
+              borderRadius: '18px',
+              padding: '10px 20px',
               fontWeight: 800,
               fontSize: '0.95rem',
               cursor: 'pointer',
