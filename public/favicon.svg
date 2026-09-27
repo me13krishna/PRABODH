@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <circle cx="256" cy="256" r="240" fill="#2563EB"/>
+  <circle cx="256" cy="256" r="210" fill="#F8FAFC"/>
+  <!-- Sun Rays -->
+  <path d="M256 60 V90 M140 106 L160 130 M372 106 L352 130" stroke="#F59E0B" stroke-width="16" stroke-linecap="round"/>
+  <!-- Sun Circle -->
+  <circle cx="256" cy="180" r="60" fill="#FBBF24"/>
+  <!-- Open Book -->
+  <path d="M120 340 Q 256 310 256 380 Q 256 310 392 340 L 392 240 Q 256 210 256 280 Q 256 210 120 240 Z" fill="#2563EB"/>
+  <!-- Sprout / Leaf in center -->
+  <path d="M256 340 Q240 300 220 290 Q256 300 256 340 Z" fill="#16A34A"/>
+  <path d="M256 340 Q272 300 292 290 Q256 300 256 340 Z" fill="#22C55E"/>
+</svg>

@@ -1,0 +1,16 @@
+{
+  "short_name": "PRABODH AI",
+  "name": "PRABODH AI — Stealth Assessment Companion",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#F8FAFC",
+  "theme_color": "#2563EB",
+  "display": "standalone",
+  "orientation": "any"
+}
