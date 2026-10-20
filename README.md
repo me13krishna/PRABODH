@@ -1,5 +1,9 @@
 <div align="center">
 
+<img src="public/logo.jpg" alt="PRABODH logo" width="160" />
+
+<br />
+
 # PRABODH · प्रबोध
 
 ### Learning that feels like an adventure.
