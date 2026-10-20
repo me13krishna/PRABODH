@@ -1,149 +1,115 @@
 <div align="center">
-  <img src="public/logo.jpg" alt="PRABODH Logo" width="120" style="border-radius: 50%;" />
-  <h1>PRABODH (प्रबोध)</h1>
-  <p><strong>Offline-First Story-Led Stealth Assessment Companion for Grade 2–3 FLN</strong></p>
 
-  <a href="https://prabodh-ch4y.onrender.com/"><img src="https://img.shields.io/badge/Live_Demo-Render-0284C7?style=for-the-badge&logo=render" alt="Live Demo" /></a>
-  <a href="https://github.com/me13krishna/PRABODH"><img src="https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github" alt="GitHub Repo" /></a>
-  <img src="https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react" alt="React 19" />
-  <img src="https://img.shields.io/badge/Vite-6.0-646CFF?style=for-the-badge&logo=vite" alt="Vite" />
-  <img src="https://img.shields.io/badge/Offline--First-IndexedDB-16A34A?style=for-the-badge" alt="Offline First" />
+# PRABODH · प्रबोध
+
+### Learning that feels like an adventure.
+
+**A story-led, offline-first learning and assessment companion for foundational literacy and numeracy (FLN), designed for Grades 2–3.**
+
+<br />
+
+<a href="https://prabodh-ch4y.onrender.com/"><strong>▶ &nbsp; Explore the live MVP</strong></a>
+&nbsp; · &nbsp;
+<a href="https://github.com/me13krishna/PRABODH">View the source</a>
+
+<br /><br />
+
+![React](https://img.shields.io/badge/React-19-149ECA?style=flat-square&logo=react&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-8-646CFF?style=flat-square&logo=vite&logoColor=white)
+![Offline first](https://img.shields.io/badge/Offline--first-IndexedDB-16865B?style=flat-square)
+![Languages](https://img.shields.io/badge/Languages-English%20·%20Hindi%20·%20Marathi-8B5CF6?style=flat-square)
+
 </div>
 
 ---
 
-## 🌟 Executive Overview
+## The idea
 
-**PRABODH (प्रबोध)** transforms Foundational Literacy and Numeracy (FLN) evaluation in Indian primary schools from intimidating paper exams into interactive, joyful story adventures. 
+Assessment should feel like play—not a test. **PRABODH** turns foundational learning checks into short, interactive story missions that help children practise while giving teachers a clearer picture of what each learner is ready to learn next.
 
-Designed specifically for low-resource classroom environments and low-end mobile devices, PRABODH operates **100% offline**, assessing children implicitly while they play through contextual story missions using voice speech recognition and tactile drag-and-drop counters.
+Built for resource-constrained classrooms and low-end devices, the app keeps learning progress on the device and is designed to work without an active internet connection during classroom use.
 
----
+## A glimpse inside
 
-## ✨ Key Features
+<div align="center">
+  <img src="public/user-flow.jpg" alt="PRABODH learner and teacher user flow" width="80%" />
+  <br />
+  <em>From a child's story mission to practical classroom insights.</em>
+</div>
 
-### 📖 Story-Driven Stealth Assessment
-* **Contextual Story Missions**: 6 interactive modules including *Rani's Stall*, *Birbal's Khichdi*, *Jungle Safari*, *Meena's Pebbles*, *Market Math*, and *Clever Rabbit*.
-* **Implicit Skill Tracking**: Evaluates addition, subtraction, place value, reading comprehension, and pronunciation without exam anxiety.
-* **Interactive Manipulatives**: Tactile drag-and-drop mango counters powered by `@dnd-kit` alongside Web Audio SFX chimes and confetti animations.
+## What you can do
 
-### 🌐 Multi-Language & Voice-Enabled
-* **1-Click Language Switch**: Seamless support across **Hindi (हिंदी)**, **English**, and **Marathi (मराठी)**.
-* **Voice Speech Recognition**: Native Web Speech API integration (`hi-IN`, `en-IN`, `mr-IN`) for spoken response verification.
+| For learners | For teachers | For families |
+| --- | --- | --- |
+| Explore six story missions with interactive activities and playful feedback. | Review a TaRL-aligned mastery heatmap across literacy and numeracy levels. | Share simple five-minute learning activities for home. |
+| Practise in English, Hindi, or Marathi, with voice input where supported. | Use learning gaps to guide a suggested 45-minute lesson for the next day. | Export a progress card as an image for WhatsApp. |
+| Build literacy and numeracy skills without the pressure of a conventional test. | Keep student progress and assessment records available offline on the device. | Reinforce classroom learning with familiar, everyday objects. |
 
-### 📴 100% Offline-First Architecture
-* Powered by browser **IndexedDB** (`idb`) to locally persist all student progress, streak counters, telemetry logs, and assessment scores.
-* Requires **zero active internet connection** during classroom hours.
+### Story missions
 
-### 👩‍🏫 Teacher Command Center
-* **TaRL Level Heatmap**: Real-time student mastery matrix aligned with *Teaching at the Right Level* (Beginner, Letter, Word, Paragraph, Story / Math Levels).
-* **"What Should I Teach Tomorrow?" Planner**: Automated 45-minute daily lesson recommendations targeted at classroom learning gaps.
+Meet **Rani at her stall**, help **Birbal with his khichdi**, go on a **jungle safari**, count **Meena's pebbles**, solve **market maths**, and outsmart the **clever rabbit**. Activities touch addition, subtraction, place value, reading comprehension, and pronunciation.
 
-### 📲 Parent Engagement Portal
-* **5-Minute Household Activities**: Simple daily home learning prompts utilizing everyday objects (utensils, news items, flowers).
-* **WhatsApp Progress Cards**: Exportable 1-click PNG progress summaries powered by `html-to-image` for parent communication.
+## Designed for the classroom
 
----
+- **Offline-first progress:** student progress, streaks, and assessment data are stored locally with IndexedDB.
+- **Multilingual by design:** switch between English, Hindi, and Marathi.
+- **Voice-enabled practice:** uses the browser's Web Speech API for supported languages and devices.
+- **Hands-on interactions:** drag-and-drop counters, sound cues, and celebratory animations make practice engaging.
+- **Teacher insights:** a TaRL-aligned view and lesson suggestions help turn observations into next steps.
 
-## 📐 System Architecture & User Flow
+> Voice recognition depends on browser and device support. Some browsers may require an internet connection for speech recognition, even when the rest of the app is available offline.
 
-### Technical Architecture
-The application is structured into 5 decoupled layers:
+## How it is put together
 
-```
-┌─────────────────────────────────────────────────────────┐
-│              FRONTEND PRESENTATION LAYER                │
-│       React 19 • Vite Engine • Tailwind CSS • Framer    │
-├─────────────────────────────────────────────────────────┤
-│            APPLICATION CORE & MEDIA SERVICES            │
-│     Story Engine • Web Speech Voice • Web Audio SFX     │
-├─────────────────────────────────────────────────────────┤
-│                OFFLINE DATA & TELEMETRY                 │
-│         IndexedDB Cache • Offline-First Hydration        │
-├─────────────────────────────────────────────────────────┤
-│                 ANALYTICS & REPORTING                   │
-│      Teacher FLN Heatmap • TaRL Evaluator Engine        │
-├─────────────────────────────────────────────────────────┤
-│             DEPLOYMENT & INFRASTRUCTURE                 │
-│       Render Static Site • GitHub Actions Pipeline      │
-└─────────────────────────────────────────────────────────┘
-```
+<div align="center">
+  <img src="public/technical-approach.jpg" alt="PRABODH technical approach" width="80%" />
+</div>
 
----
+| Layer | Tools and responsibilities |
+| --- | --- |
+| Experience | React 19, Vite, Tailwind CSS, and Framer Motion |
+| Activities | Story missions, drag-and-drop interactions, Web Speech API, and Web Audio |
+| Local data | IndexedDB via `idb` for offline-first progress |
+| Sharing | `html-to-image` for parent-ready progress cards |
+| Hosting | Render static site |
 
-## 🚀 Getting Started
+## Run it locally
 
-### Prerequisites
-* **Node.js**: `v18.0.0` or higher
-* **npm**: `v9.0.0` or higher
+### Requirements
 
-### Local Installation & Setup
+- Node.js **20.19+** or **22.12+**
+- npm
 
-1. **Clone the Repository**:
-   ```bash
-   git clone https://github.com/me13krishna/PRABODH.git
-   cd PRABODH
-   ```
+### Setup
 
-2. **Install Dependencies**:
-   ```bash
-   npm install
-   ```
-
-3. **Start Development Server**:
-   ```bash
-   npm run dev
-   ```
-   Open `http://localhost:5173` in your browser.
-
-4. **Build for Production**:
-   ```bash
-   npm run build
-   ```
-
-5. **Preview Production Build**:
-   ```bash
-   npm run preview
-   ```
-
----
-
-## 📁 Repository Structure
-
-```
-PRABODH/
-├── public/
-│   ├── logo.jpg               # Official PRABODH round logo asset
-│   ├── _redirects             # Render SPA routing configuration
-│   └── manifest.json          # Progressive Web App manifest
-├── src/
-│   ├── components/            # UI components (StoryPlayer, MissionSelector, etc.)
-│   │   ├── TeacherDashboard/  # Heatmap & lesson planner
-│   │   └── ui/                # Base UI primitives (Button, Card, Badge)
-│   ├── data/                  # Story missions & mock student roster
-│   ├── i18n/                  # Hindi, English, Marathi translations
-│   ├── services/              # IndexedDB, Web Speech, Web Audio SFX
-│   ├── App.jsx                # Core application entry
-│   ├── main.jsx               # React DOM root
-│   └── index.css              # Global Tailwind CSS styles
-├── .github/workflows/
-│   └── deploy.yml             # GitHub Actions auto-deployment pipeline
-├── render.yaml                # Render static site blueprint
-├── vite.config.js             # Vite configuration with Render allowed hosts
-└── package.json               # Project dependencies & build scripts
+```bash
+git clone https://github.com/me13krishna/PRABODH.git
+cd PRABODH
+npm install
+npm run dev
 ```
 
+Open the local URL printed by Vite (usually `http://localhost:5173`).
+
+### Production build
+
+```bash
+npm run build
+npm run preview
+```
+
+## Live MVP
+
+Try PRABODH here: **[prabodh-ch4y.onrender.com](https://prabodh-ch4y.onrender.com/)**
+
+The app is hosted as a Render Static Site. The repository also includes a Render blueprint and a GitHub Actions workflow.
+
+## License
+
+Open-source project for educational empowerment in Indian primary schools. See the repository for license details.
+
 ---
 
-## ☁️ Deployment
-
-PRABODH is deployed on **Render** as a Static Site.
-
-* **Live Web App**: [https://prabodh-ch4y.onrender.com/](https://prabodh-ch4y.onrender.com/)
-* **Continuous Integration**: GitHub Actions workflow automatically verifies build status and triggers deployment syncs.
-
----
-
-## 📜 License
-
-This project is open-source and built for educational empowerment in Indian primary schools (Grades 2–3 FLN literacy & numeracy).
+<div align="center">
+  <sub>Made for curious minds, confident teachers, and joyful learning.</sub>
+</div>
